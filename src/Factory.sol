@@ -5,7 +5,7 @@ import { ERC20 } from "solmate/tokens/ERC20.sol";
 
 import { FeeRegistry } from "./FeeRegistry.sol";
 import { XcmRouter, XcmInstructions } from "./XcmRouter.sol";
-import { WormholeRouter } from "./WormholeRouter.sol";
+import { WormholeRouter, WormholeInstructions } from "./WormholeRouter.sol";
 
 contract Factory {
     function deployXcmRouter(FeeRegistry fees, XcmInstructions memory inst) public returns (XcmRouter) {
@@ -51,7 +51,48 @@ contract Factory {
         router.routeNoFee(token);
     }
 
-    function deployWormholeRouter() public returns (WormholeRouter) {
-        return new WormholeRouter();
+    function deployWormholeRouter(FeeRegistry fees, WormholeInstructions memory inst) public returns (WormholeRouter) {
+        // no need to use salt as we want to keep the router address the same for the same fees &instructions
+        bytes32 salt;
+
+        WormholeRouter router;
+        try new WormholeRouter{salt: salt}(fees, inst) returns (WormholeRouter router_) {
+            router = router_;
+        } catch {
+            router = WormholeRouter(
+                address(
+                    uint160(
+                        uint256(
+                            keccak256(
+                                abi.encodePacked(
+                                    bytes1(0xff),
+                                    address(this),
+                                    salt,
+                                    keccak256(
+                                        abi.encodePacked(
+                                            type(WormholeRouter).creationCode, abi.encode(fees), abi.encode(inst)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+
+        return router;
+    }
+
+    function deployWormholeRouterAndRoute(FeeRegistry fees, WormholeInstructions memory inst, ERC20 token) public {
+        WormholeRouter router = deployWormholeRouter(fees, inst);
+        router.route(token);
+    }
+
+    function deployWormholeRouterAndRouteNoFee(FeeRegistry fees, WormholeInstructions memory inst, ERC20 token)
+        public
+    {
+        WormholeRouter router = deployWormholeRouter(fees, inst);
+        router.routeNoFee(token);
     }
 }
