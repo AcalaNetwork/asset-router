@@ -28,7 +28,7 @@ abstract contract BaseRouter {
 
     function route(ERC20 token) public {
         uint256 fee = fees.getFee(address(token));
-        
+
         // should use routeNoFee if relayer is not expecting a fee
         require(fee > 0, "zero fee");
 

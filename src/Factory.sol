@@ -1,17 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {ERC20} from "solmate/tokens/ERC20.sol";
+import { ERC20 } from "solmate/tokens/ERC20.sol";
 
-import {FeeRegistry} from "./FeeRegistry.sol";
-import {XcmRouter, XcmInstructions} from "./XcmRouter.sol";
-import {WormholeRouter} from "./WormholeRouter.sol";
+import { FeeRegistry } from "./FeeRegistry.sol";
+import { XcmRouter, XcmInstructions } from "./XcmRouter.sol";
+import { WormholeRouter } from "./WormholeRouter.sol";
 
 contract Factory {
-    function deployXcmRouter(FeeRegistry fees, XcmInstructions memory inst)
-        public
-        returns (XcmRouter)
-    {
+    function deployXcmRouter(FeeRegistry fees, XcmInstructions memory inst) public returns (XcmRouter) {
         // no need to use salt as we want to keep the router address the same for the same fees &instructions
         bytes32 salt;
 
@@ -30,9 +27,7 @@ contract Factory {
                                     salt,
                                     keccak256(
                                         abi.encodePacked(
-                                            type(XcmRouter).creationCode,
-                                            abi.encode(fees),
-                                            abi.encode(inst)
+                                            type(XcmRouter).creationCode, abi.encode(fees), abi.encode(inst)
                                         )
                                     )
                                 )
@@ -46,20 +41,12 @@ contract Factory {
         return router;
     }
 
-    function deployXcmRouterAndRoute(
-        FeeRegistry fees,
-        XcmInstructions memory inst,
-        ERC20 token
-    ) public {
+    function deployXcmRouterAndRoute(FeeRegistry fees, XcmInstructions memory inst, ERC20 token) public {
         XcmRouter router = deployXcmRouter(fees, inst);
         router.route(token);
     }
 
-    function deployXcmRouterAndRouteNoFee(
-        FeeRegistry fees,
-        XcmInstructions memory inst,
-        ERC20 token
-    ) public {
+    function deployXcmRouterAndRouteNoFee(FeeRegistry fees, XcmInstructions memory inst, ERC20 token) public {
         XcmRouter router = deployXcmRouter(fees, inst);
         router.routeNoFee(token);
     }
