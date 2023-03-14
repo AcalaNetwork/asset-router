@@ -26,13 +26,13 @@ abstract contract BaseRouter {
         }
     }
 
-    function route(ERC20 token) public {
+    function route(ERC20 token, address relayer) public {
         uint256 fee = fees.getFee(address(token));
 
         // should use routeNoFee if relayer is not expecting a fee
         require(fee > 0, "zero fee");
 
-        token.safeTransfer(msg.sender, fee);
+        token.safeTransfer(relayer, fee);
         routeNoFee(token);
     }
 }

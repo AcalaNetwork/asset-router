@@ -43,7 +43,7 @@ contract Factory {
 
     function deployXcmRouterAndRoute(FeeRegistry fees, XcmInstructions memory inst, ERC20 token) public {
         XcmRouter router = deployXcmRouter(fees, inst);
-        router.route(token);
+        router.route(token, msg.sender);
     }
 
     function deployXcmRouterAndRouteNoFee(FeeRegistry fees, XcmInstructions memory inst, ERC20 token) public {
@@ -86,7 +86,7 @@ contract Factory {
 
     function deployWormholeRouterAndRoute(FeeRegistry fees, WormholeInstructions memory inst, ERC20 token) public {
         WormholeRouter router = deployWormholeRouter(fees, inst);
-        router.route(token);
+        router.route(token, msg.sender);
     }
 
     function deployWormholeRouterAndRouteNoFee(FeeRegistry fees, WormholeInstructions memory inst, ERC20 token)

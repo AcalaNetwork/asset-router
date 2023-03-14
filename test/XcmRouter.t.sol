@@ -14,6 +14,7 @@ contract XcmRouterTest is Test {
     MockToken public token3;
     address public alice = address(0x1);
     address public bob = address(0x2);
+    address public charlie = address(0x3);
 
     function setUp() public {
         token1 = new MockToken("Token1", "TK1");
@@ -34,11 +35,25 @@ contract XcmRouterTest is Test {
         token1.transfer(address(router), 5 ether);
 
         vm.prank(bob);
-        router.route(token1);
+        router.route(token1, bob);
 
         assertEq(token1.balanceOf(address(router)), 0);
         assertEq(token1.balanceOf(alice), 4 ether); // amount - fee
         assertEq(token1.balanceOf(bob), 1 ether); // fee
+    }
+
+    function testRouteWithFeeWithOtherRecipient() public {
+        XcmInstructions memory inst = XcmInstructions(alice);
+        XcmRouter router = new XcmRouter(fees, inst);
+
+        token1.transfer(address(router), 5 ether);
+
+        vm.prank(bob);
+        router.route(token1, charlie);
+
+        assertEq(token1.balanceOf(address(router)), 0);
+        assertEq(token1.balanceOf(alice), 4 ether); // amount - fee
+        assertEq(token1.balanceOf(charlie), 1 ether); // fee
     }
 
     function testRouteWithoutFee() public {
@@ -63,7 +78,7 @@ contract XcmRouterTest is Test {
 
         vm.prank(bob);
         vm.expectRevert("zero fee");
-        router.route(token3);
+        router.route(token3, bob);
 
         router.routeNoFee(token3);
 
