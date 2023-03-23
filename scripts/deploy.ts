@@ -17,7 +17,6 @@ async function main() {
   const factory = await Factory.deploy(gasOverride);
   await factory.deployed();
 
-
   const fee = await FeeRegistry.deploy([{
     token: token.address,
     amount: ethers.utils.parseEther('1'),

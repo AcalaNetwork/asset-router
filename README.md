@@ -24,6 +24,11 @@ forge test
 yarn
 ```
 
+- build
+```
+yarn build
+```
+
 - run deploy script
 ```
 yarn deploy --network mandala
