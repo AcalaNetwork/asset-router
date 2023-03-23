@@ -13,7 +13,7 @@ contract Factory {
         bytes32 salt;
 
         XcmRouter router;
-        try new XcmRouter{salt: bytes32("0")}(fees, inst) returns (XcmRouter router_) {
+        try new XcmRouter{salt: salt}(fees, inst) returns (XcmRouter router_) {
             router = router_;
         } catch {
             router = XcmRouter(
