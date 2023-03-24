@@ -24,11 +24,6 @@
     "@polkadot/api" "^9.9.1"
     "@polkadot/rpc-core" "^9.9.1"
 
-"@acala-network/contracts@^2.3.4":
-  version "2.3.4"
-  resolved "https://registry.npmjs.org/@acala-network/contracts/-/contracts-2.3.4.tgz#f7b3591a18660cd5fd58020617f91279a3de10d4"
-  integrity sha512-r2SSymhuoYZGMkAskQrm512wND6mUsZ3uNSwMrIfSCejgNuZKYIwLoGIGM94BS+pdvKCglHoWX3qy37fMIo8pw==
-
 "@acala-network/contracts@~4.3.4":
   version "4.3.4"
   resolved "https://registry.npmmirror.com/@acala-network/contracts/-/contracts-4.3.4.tgz#f37cf54894c72b762df539042a61f90b10b68600"

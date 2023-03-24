@@ -14,7 +14,6 @@
     "clean": "rm -rf out/ cache* typechain-types"
   },
   "devDependencies": {
-    "@acala-network/contracts": "^2.3.4",
     "@acala-network/eth-providers": "^2.6.2",
     "@certusone/wormhole-sdk": "^0.9.11",
     "@ethersproject/abi": "^5.4.7",
