@@ -7,6 +7,7 @@ import "../src/XcmRouter.sol";
 import "../src/FeeRegistry.sol";
 import "../src/Factory.sol";
 import "./MockToken.sol";
+import "./MockXtokens.sol";
 
 contract FactoryTest is Test {
     Factory factory;
@@ -28,10 +29,13 @@ contract FactoryTest is Test {
 
         fees = new FeeRegistry(feeArray);
         factory = new Factory();
+
+        MockXtokens mock = new MockXtokens();
+        vm.etch(XTOKENS, address(mock).code);
     }
 
     function testDeployXcmRounter() public {
-        XcmInstructions memory inst = XcmInstructions(alice);
+        XcmInstructions memory inst = XcmInstructions(abi.encodePacked(alice), hex"00");
 
         XcmRouter router = factory.deployXcmRouter(fees, inst);
         XcmRouter router2 = factory.deployXcmRouter(fees, inst);
@@ -46,7 +50,7 @@ contract FactoryTest is Test {
         assertEq(address(router3), address(router4));
         assertTrue(router != router3);
 
-        XcmInstructions memory inst2 = XcmInstructions(bob);
+        XcmInstructions memory inst2 = XcmInstructions(abi.encodePacked(bob), hex"00");
 
         XcmRouter router5 = factory.deployXcmRouter(fees2, inst2);
         XcmRouter router6 = factory.deployXcmRouter(fees2, inst2);
@@ -57,7 +61,7 @@ contract FactoryTest is Test {
     }
 
     function testDeployXcmRouterAndRoute() public {
-        XcmInstructions memory inst = XcmInstructions(alice);
+        XcmInstructions memory inst = XcmInstructions(abi.encodePacked(alice), hex"00");
 
         // deploy router, get address, and revert the router deployment
         // so we can get address without contract deployment
@@ -76,7 +80,7 @@ contract FactoryTest is Test {
     }
 
     function testDeployXcmRouterAndRouteNoFee() public {
-        XcmInstructions memory inst = XcmInstructions(alice);
+        XcmInstructions memory inst = XcmInstructions(abi.encodePacked(alice), hex"00");
 
         // deploy router, get address, and revert the router deployment
         // so we can get address without contract deployment
@@ -95,7 +99,7 @@ contract FactoryTest is Test {
     }
 
     function testRouteMultiToken() public {
-        XcmInstructions memory inst = XcmInstructions(alice);
+        XcmInstructions memory inst = XcmInstructions(abi.encodePacked(alice), hex"00");
 
         // deploy router, get address, and revert the router deployment
         // so we can get address without contract deployment

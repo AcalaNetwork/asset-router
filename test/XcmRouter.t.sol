@@ -6,6 +6,7 @@ import "forge-std/Test.sol";
 import "../src/XcmRouter.sol";
 import "../src/FeeRegistry.sol";
 import "./MockToken.sol";
+import "./MockXtokens.sol";
 
 contract XcmRouterTest is Test {
     FeeRegistry public fees;
@@ -26,10 +27,13 @@ contract XcmRouterTest is Test {
         feeArray[1] = Fee(address(token2), 2 ether);
 
         fees = new FeeRegistry(feeArray);
+
+        MockXtokens mock = new MockXtokens();
+        vm.etch(XTOKENS, address(mock).code);
     }
 
     function testRouteWithFee() public {
-        XcmInstructions memory inst = XcmInstructions(alice);
+        XcmInstructions memory inst = XcmInstructions(abi.encodePacked(alice), hex"00");
         XcmRouter router = new XcmRouter(fees, inst);
 
         token1.transfer(address(router), 5 ether);
@@ -43,7 +47,7 @@ contract XcmRouterTest is Test {
     }
 
     function testRouteWithFeeWithOtherRecipient() public {
-        XcmInstructions memory inst = XcmInstructions(alice);
+        XcmInstructions memory inst = XcmInstructions(abi.encodePacked(alice), hex"00");
         XcmRouter router = new XcmRouter(fees, inst);
 
         token1.transfer(address(router), 5 ether);
@@ -57,7 +61,7 @@ contract XcmRouterTest is Test {
     }
 
     function testRouteWithoutFee() public {
-        XcmInstructions memory inst = XcmInstructions(alice);
+        XcmInstructions memory inst = XcmInstructions(abi.encodePacked(alice), hex"00");
         XcmRouter router = new XcmRouter(fees, inst);
 
         token1.transfer(address(router), 5 ether);
@@ -71,7 +75,7 @@ contract XcmRouterTest is Test {
     }
 
     function testRouteForUnknownToken() public {
-        XcmInstructions memory inst = XcmInstructions(alice);
+        XcmInstructions memory inst = XcmInstructions(abi.encodePacked(alice), hex"00");
         XcmRouter router = new XcmRouter(fees, inst);
 
         token3.transfer(address(router), 5 ether);

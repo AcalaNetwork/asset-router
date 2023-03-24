@@ -3,3 +3,4 @@ forge-std/=lib/forge-std/src/
 solmate/=lib/solmate/src/
 @openzeppelin/=lib/openzeppelin-contracts/
 wormhole/=lib/wormhole/ethereum/contracts/
+@acala-network/=lib/predeploy-contracts/
