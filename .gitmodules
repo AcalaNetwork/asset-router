@@ -13,3 +13,7 @@
 	path = lib/wormhole
 	url = https://github.com/wormhole-foundation/wormhole
 	branch = v2.14.9
+[submodule "lib/predeploy-contracts"]
+	path = lib/predeploy-contracts
+	url = https://github.com/AcalaNetwork/predeploy-contracts
+	branch = v4.3.5
