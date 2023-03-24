@@ -1,10 +1,10 @@
 import { CHAIN_ID_ETH, tryNativeToHexString } from '@certusone/wormhole-sdk';
 import { ethers } from 'hardhat';
 import { WormholeInstructionsStruct } from '../typechain-types/src/Factory';
-import { gasOverride, KARURA_TESTNET_TOKEN_BRIDGE_ADDRESS, loadSetups } from './utils';
+import { gasOverride, loadSetups } from './utils';
 
 async function main() {
-  const { deployer, user, relayer, usdt, fee, factory } = await loadSetups();
+  const { deployer, user, relayer, usdt, fee, factory, tokenBridgeAddr } = await loadSetups();
 
   const targetRecepient = Buffer.from(tryNativeToHexString(user.address, 'ethereum'), 'hex');
   const wormholeInstructions: WormholeInstructionsStruct = {
@@ -17,7 +17,7 @@ async function main() {
   const routerAddr = await factory.callStatic.deployWormholeRouter(
     fee.address,
     wormholeInstructions,
-    KARURA_TESTNET_TOKEN_BRIDGE_ADDRESS,
+    tokenBridgeAddr,
     gasOverride,
   );
   console.log({ predictedRouterAddr: routerAddr });
@@ -47,7 +47,7 @@ async function main() {
   const tx = await factory.deployWormholeRouterAndRoute(
     fee.address,
     wormholeInstructions,
-    KARURA_TESTNET_TOKEN_BRIDGE_ADDRESS,
+    tokenBridgeAddr,
     usdt.address,
     gasOverride
   );
