@@ -27,7 +27,7 @@ contract Factory {
                                     salt,
                                     keccak256(
                                         abi.encodePacked(
-                                            type(XcmRouter).creationCode, abi.encode(fees), abi.encode(inst)
+                                            type(XcmRouter).creationCode, abi.encode(fees, inst)
                                         )
                                     )
                                 )
@@ -70,7 +70,7 @@ contract Factory {
                                     salt,
                                     keccak256(
                                         abi.encodePacked(
-                                            type(WormholeRouter).creationCode, abi.encode(fees), abi.encode(inst)
+                                            type(WormholeRouter).creationCode, abi.encode(fees, inst)
                                         )
                                     )
                                 )
