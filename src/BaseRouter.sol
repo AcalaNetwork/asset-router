@@ -11,8 +11,12 @@ abstract contract BaseRouter {
 
     FeeRegistry public fees;
 
+    event RouterCreated(address indexed addr);
+    event RouterDestroyed(address indexed addr);
+
     constructor(FeeRegistry fees_) {
         fees = fees_;
+        emit RouterCreated(address(this));
     }
 
     function routeImpl(ERC20 token) internal virtual;
@@ -22,6 +26,7 @@ abstract contract BaseRouter {
 
         // selfdestruct only if balance is zero to make sure this cannot be used to steal native tokens
         if (address(this).balance == 0) {
+            emit RouterDestroyed(address(this));
             selfdestruct(payable(msg.sender));
         }
     }

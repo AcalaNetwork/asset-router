@@ -51,12 +51,16 @@ contract Factory {
         router.routeNoFee(token);
     }
 
-    function deployWormholeRouter(FeeRegistry fees, WormholeInstructions memory inst) public returns (WormholeRouter) {
+    function deployWormholeRouter(
+        FeeRegistry fees,
+        WormholeInstructions memory inst,
+        address tokenBridgeAddress
+    ) public returns (WormholeRouter) {
         // no need to use salt as we want to keep the router address the same for the same fees &instructions
         bytes32 salt;
 
         WormholeRouter router;
-        try new WormholeRouter{salt: salt}(fees, inst) returns (WormholeRouter router_) {
+        try new WormholeRouter{salt: salt}(fees, inst, tokenBridgeAddress) returns (WormholeRouter router_) {
             router = router_;
         } catch {
             router = WormholeRouter(
@@ -84,15 +88,23 @@ contract Factory {
         return router;
     }
 
-    function deployWormholeRouterAndRoute(FeeRegistry fees, WormholeInstructions memory inst, ERC20 token) public {
-        WormholeRouter router = deployWormholeRouter(fees, inst);
+    function deployWormholeRouterAndRoute(
+        FeeRegistry fees,
+        WormholeInstructions memory inst,
+        address tokenBridgeAddress,
+        ERC20 token
+    ) public {
+        WormholeRouter router = deployWormholeRouter(fees, inst, tokenBridgeAddress);
         router.route(token, msg.sender);
     }
 
-    function deployWormholeRouterAndRouteNoFee(FeeRegistry fees, WormholeInstructions memory inst, ERC20 token)
-        public
-    {
-        WormholeRouter router = deployWormholeRouter(fees, inst);
+    function deployWormholeRouterAndRouteNoFee(
+        FeeRegistry fees,
+        WormholeInstructions memory inst,
+        address tokenBridgeAddress,
+        ERC20 token
+    ) public {
+        WormholeRouter router = deployWormholeRouter(fees, inst, tokenBridgeAddress);
         router.routeNoFee(token);
     }
 }

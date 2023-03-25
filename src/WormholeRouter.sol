@@ -16,14 +16,19 @@ struct WormholeInstructions {
 
 contract WormholeRouter is BaseRouter {
     // https://book.wormhole.com/reference/contracts.html#token-bridge
-    ITokenBridge private constant _bridge = ITokenBridge(address(0xae9d7fe007b3327AA64A32824Aaac52C42a6E624));
+    ITokenBridge private _bridge; 
+    address private _tokenBridgeAddress; 
     WormholeInstructions private _instructions;
 
-    constructor(FeeRegistry fees, WormholeInstructions memory instructions) BaseRouter(fees) {
+    constructor(FeeRegistry fees, WormholeInstructions memory instructions, address tokenBridgeAddress) BaseRouter(fees) {
         _instructions = instructions;
+        _tokenBridgeAddress = tokenBridgeAddress;
+        _bridge = ITokenBridge(tokenBridgeAddress);
     }
 
     function routeImpl(ERC20 token) internal override {
+        token.approve(_tokenBridgeAddress, token.balanceOf(address(this)));
+
         _bridge.transferTokens(
             address(token),
             token.balanceOf(address(this)),
