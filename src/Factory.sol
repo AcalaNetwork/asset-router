@@ -25,11 +25,7 @@ contract Factory {
                                     bytes1(0xff),
                                     address(this),
                                     salt,
-                                    keccak256(
-                                        abi.encodePacked(
-                                            type(XcmRouter).creationCode, abi.encode(fees, inst)
-                                        )
-                                    )
+                                    keccak256(abi.encodePacked(type(XcmRouter).creationCode, abi.encode(fees, inst)))
                                 )
                             )
                         )
@@ -51,11 +47,10 @@ contract Factory {
         router.routeNoFee(token);
     }
 
-    function deployWormholeRouter(
-        FeeRegistry fees,
-        WormholeInstructions memory inst,
-        address tokenBridgeAddress
-    ) public returns (WormholeRouter) {
+    function deployWormholeRouter(FeeRegistry fees, WormholeInstructions memory inst, address tokenBridgeAddress)
+        public
+        returns (WormholeRouter)
+    {
         // no need to use salt as we want to keep the router address the same for the same fees &instructions
         bytes32 salt;
 
@@ -73,9 +68,7 @@ contract Factory {
                                     address(this),
                                     salt,
                                     keccak256(
-                                        abi.encodePacked(
-                                            type(WormholeRouter).creationCode, abi.encode(fees, inst)
-                                        )
+                                        abi.encodePacked(type(WormholeRouter).creationCode, abi.encode(fees, inst))
                                     )
                                 )
                             )
