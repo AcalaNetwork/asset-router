@@ -1,8 +1,9 @@
-import { ethers } from 'hardhat';
-import { gasOverride, KARURA_TESTNET_USDT_ADDRESS } from './utils';
+import { ethers, network } from 'hardhat';
+import { ADDRESSES } from './consts';
+import { gasOverride } from './utils';
 
 const FEES = [{
-  token: KARURA_TESTNET_USDT_ADDRESS,
+  token: ADDRESSES[network.name].usdtAddr,
   amount: ethers.utils.parseEther('0.0002'),
 }];
 
