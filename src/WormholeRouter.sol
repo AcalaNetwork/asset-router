@@ -15,9 +15,8 @@ struct WormholeInstructions {
 }
 
 contract WormholeRouter is BaseRouter {
-    // https://book.wormhole.com/reference/contracts.html#token-bridge
-    ITokenBridge private _bridge;
-    address private _tokenBridgeAddress;
+    ITokenBridge private _bridge; 
+    address private _tokenBridgeAddress; 
     WormholeInstructions private _instructions;
 
     constructor(FeeRegistry fees, WormholeInstructions memory instructions, address tokenBridgeAddress)

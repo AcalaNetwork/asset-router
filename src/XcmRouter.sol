@@ -3,7 +3,8 @@ pragma solidity ^0.8.17;
 
 import { ERC20 } from "solmate/tokens/ERC20.sol";
 import { IXtokens } from "@acala-network/contracts/xtokens/IXtokens.sol";
-import { XTOKENS } from "@acala-network/contracts/utils/Predeploy.sol";
+// import { XTOKENS } from "@acala-network/contracts/utils/Predeploy.sol";
+address constant XTOKENS = 0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108;      // temp deterministic setup
 
 import { BaseRouter } from "./BaseRouter.sol";
 import { FeeRegistry } from "./FeeRegistry.sol";
