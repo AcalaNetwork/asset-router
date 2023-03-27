@@ -19,7 +19,9 @@ contract WormholeRouter is BaseRouter {
     address private _tokenBridgeAddress; 
     WormholeInstructions private _instructions;
 
-    constructor(FeeRegistry fees, WormholeInstructions memory instructions, address tokenBridgeAddress) BaseRouter(fees) {
+    constructor(FeeRegistry fees, WormholeInstructions memory instructions, address tokenBridgeAddress)
+        BaseRouter(fees)
+    {
         _instructions = instructions;
         _tokenBridgeAddress = tokenBridgeAddress;
         _bridge = ITokenBridge(tokenBridgeAddress);
