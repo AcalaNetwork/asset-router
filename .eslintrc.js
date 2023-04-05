@@ -40,6 +40,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 0, // type inference on return type is useful
     '@typescript-eslint/no-parameter-properties': 0,
     '@typescript-eslint/typedef': 0,
+    '@typescript-eslint/no-non-null-assertion': 0,  // can assert not null
     'no-unused-expressions': 0, // short ciucuit if
     'max-lines': 0,
   },

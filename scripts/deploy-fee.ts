@@ -2,14 +2,19 @@ import { ethers, network } from 'hardhat';
 import { ADDRESSES } from './consts';
 import { gasOverride } from './utils';
 
-const FEES = [{
-  token: ADDRESSES[network.name].usdtAddr,
-  amount: ethers.utils.parseEther('0.0002'),
-}];
-
 async function main() {
+  const tokenAddr = ADDRESSES[network.name].usdcAddr;
+  const Token = await ethers.getContractFactory('MockToken');
+  const token = Token.attach(tokenAddr);
+  const decimals = await token.decimals();
+
+  const feeConfig = [{
+    token: tokenAddr,
+    amount: ethers.utils.parseUnits('0.0002', decimals),
+  }];
+
   const FeeRegistry = await ethers.getContractFactory('FeeRegistry');
-  const fee = await FeeRegistry.deploy(FEES, gasOverride);
+  const fee = await FeeRegistry.deploy(feeConfig, gasOverride);
   await fee.deployed();
 
   console.log(`feeRegistry address: ${fee.address}`);

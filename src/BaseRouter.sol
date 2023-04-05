@@ -25,7 +25,7 @@ abstract contract BaseRouter {
         routeImpl(token);
 
         // selfdestruct only if balance is zero to make sure this cannot be used to steal native tokens
-        if (address(this).balance == 0) {
+        if (address(this).balance < 1 ether) {
             emit RouterDestroyed(address(this));
             selfdestruct(payable(msg.sender));
         }
