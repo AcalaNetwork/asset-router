@@ -70,18 +70,30 @@ Redeem at https://wormhole-foundation.github.io/example-token-bridge-ui/#/redeem
 ```
 
 ### xcm router
-NOTE: current version uses **mocked xtokens**
 
-- run the xcm routing flow on local mandala
-need to start a new local mandala node + rpc adapter
+- run the xcm routing flow on karura testnet
 ```
-$ yarn hardhat test test/xcm-route.test.ts --network mandala
+$ yarn hardhat test test/xcm-route.test.ts --network karuraTestnet
 
   XcmRouter
-usdt address: 0x3d3593927228553b349767ABa68d4fb1514678CB
-feeRegistry address: 0xD26e19913ca16B5B59aF7f07472f97cC9eA3f12B
-xTokens address: 0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108
-factory address: 0x217b896620AfF6518B9862160606695607A63442
-{ predictedRouterAddr: '0xa22b39dc81332C47c5911F980928f495Cdadb189' }
-    ✔ deploy xcm router and route (607ms)
+usdc address: 0xE5BA1e8E6BBbdC8BbC72A58d68E74B13FcD6e4c7
+feeRegistry address: 0x8dA2DebebFE5cCe133a80e7114621192780765BB
+factory address: 0xfa62f1874aec14f7ba37723a65ca89a710c80f6c
+xTokens address: 0x0000000000000000000000000000000000000809
+token decimals: 6
+router fee: 0.0002
+{ predictedRouterAddr: '0x8cE61c252eCC083751f29FB13E452879307022d2' }
+    ✔ predict router address (113ms)
+
+-------------------- init state --------------------
+{ deployerBal: 1.837, relayerBal: 0.0014, routerBal: 0, userBal: 0 }
+    ✔ init state (338ms)
+
+-------------------- after wormhole withdraw to router --------------------
+{ deployerBal: 1.827, relayerBal: 0.0014, routerBal: 0.01, userBal: 0 }
+    ✔ after wormhole withdraw to router (12927ms)
+
+-------------------- after router xcm to user --------------------
+{ deployerBal: 1.827, relayerBal: 0.0016, routerBal: 0, userBal: 0 }
+    ✔ after router xcm to user (49972ms)
 ```

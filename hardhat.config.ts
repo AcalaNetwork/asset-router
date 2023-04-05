@@ -14,13 +14,16 @@ const config: HardhatUserConfig = {
       chainId: 595,
     },
     karuraTestnet: {
-      url: 'http://127.0.0.1:8545',
+      url: 'https://eth-rpc-karura-testnet.aca-staging.network',
       accounts: {
         mnemonic: 'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm',
         path: 'm/44\'/60\'/0\'/0',
       },
       chainId: 596,
     },
+  },
+  mocha: {
+    timeout: 600000, // 10 min
   },
 };
 
