@@ -138,12 +138,6 @@ describe('XcmRouter', () => {
       value: fundRouterAmount,
     })).wait();
 
-<<<<<<< HEAD
-=======
-    // router need some ACA to pay for storage
-    expect(await relayer.provider!.getBalance(routerAddr)).to.eq(fundRouterAmount);
-
->>>>>>> origin/master
     const deployAndRoute = factory.connect(relayer).deployXcmRouterAndRoute(
       fee.address,
       xcmInstruction,
