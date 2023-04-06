@@ -14,7 +14,6 @@ docs/
 .env
 
 node_modules
-.env
 coverage
 coverage.json
 typechain
@@ -26,3 +25,10 @@ artifacts
 
 yarn-error.log
 cache_hardhat/
+
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+.yarn/versions
