@@ -14,7 +14,7 @@ type Resolved<T> = T extends Promise<infer U> ? U : T;
 
 const feeAddr = '0x8dA2DebebFE5cCe133a80e7114621192780765BB';
 const usdcAddr = '0xE5BA1e8E6BBbdC8BbC72A58d68E74B13FcD6e4c7';
-const factoryAddr = '0xe9520d38d6f7de473bb7f605a75bbf3d4f8d060f';
+const factoryAddr = '0xed9ae45a067cadc843e26d377c9cd8e963b299f1';
 
 describe('XcmRouter', () => {
   // fixed
@@ -132,12 +132,6 @@ describe('XcmRouter', () => {
 
   it('after router xcm to user', async () => {
     console.log('\n-------------------- after router xcm to user --------------------');
-    const fundRouterAmount = ethers.utils.parseEther('0.5');
-    await (await relayer.sendTransaction({
-      to: routerAddr,
-      value: fundRouterAmount,
-    })).wait();
-
     const deployAndRoute = factory.connect(relayer).deployXcmRouterAndRoute(
       fee.address,
       xcmInstruction,
