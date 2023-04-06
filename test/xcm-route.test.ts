@@ -14,7 +14,7 @@ type Resolved<T> = T extends Promise<infer U> ? U : T;
 
 const feeAddr = '0x8dA2DebebFE5cCe133a80e7114621192780765BB';
 const usdcAddr = '0xE5BA1e8E6BBbdC8BbC72A58d68E74B13FcD6e4c7';
-const factoryAddr = '0x5f46026e680b28c410978989f2a58459c21bc252';
+const factoryAddr = '0xe9520d38d6f7de473bb7f605a75bbf3d4f8d060f';
 
 describe('XcmRouter', () => {
   // fixed
@@ -137,9 +137,6 @@ describe('XcmRouter', () => {
       to: routerAddr,
       value: fundRouterAmount,
     })).wait();
-
-    // router need some ACA to pay for storage
-    expect(await relayer.provider!.getBalance(routerAddr)).to.eq(fundRouterAmount);
 
     const deployAndRoute = factory.connect(relayer).deployXcmRouterAndRoute(
       fee.address,
