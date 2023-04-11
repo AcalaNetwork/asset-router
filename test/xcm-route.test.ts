@@ -4,7 +4,6 @@ import XtokensJSON from '@acala-network/contracts/build/contracts/IXtokens.json'
 import { XTOKENS } from '@acala-network/contracts/utils/Predeploy';
 import { BigNumber, Contract } from 'ethers';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { Xtokens__factory } from '@acala-network/contracts/typechain';
 
 import { gasOverride } from '../scripts/utils';
 import { FeeRegistry, MockToken } from '../typechain-types';
