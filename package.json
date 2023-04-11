@@ -1,17 +1,22 @@
 {
-  "name": "asset-router",
+  "name": "@acala-network/asset-router",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:AcalaNetwork/asset-router.git",
   "author": "Acala Developers <hello@acala.network>",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
+  "files": [
+    "artifacts",
+    "typechain-types"
+  ],
   "scripts": {
     "build": " hardhat compile",
     "deploy": "hardhat run scripts/deploy.ts --network mandala",
     "deploy-testnet": "hardhat run scripts/deploy-testnet.ts --network karuraTestnet",
     "test": "hardhat test",
     "lint": "eslint scripts",
-    "clean": "rm -rf out/ cache* typechain-types"
+    "clean": "rm -rf out/ cache* typechain-types",
+    "prepublish": "yarn clean && yarn build"
   },
   "devDependencies": {
     "@acala-network/contracts": "^4.3.7",

@@ -4,17 +4,19 @@ import XtokensJSON from '@acala-network/contracts/build/contracts/IXtokens.json'
 import { XTOKENS } from '@acala-network/contracts/utils/Predeploy';
 import { BigNumber, Contract } from 'ethers';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { Xtokens__factory } from '@acala-network/contracts/typechain';
 
 import { gasOverride } from '../scripts/utils';
 import { FeeRegistry, MockToken } from '../typechain-types';
 import { Factory, XcmInstructionsStruct } from '../typechain-types/src/Factory';
+import { ADDRESSES } from '../scripts/consts';
 
 type Resolved<T> = T extends Promise<infer U> ? U : T;
 
-const feeAddr = '0x8dA2DebebFE5cCe133a80e7114621192780765BB';
-const usdcAddr = '0xE5BA1e8E6BBbdC8BbC72A58d68E74B13FcD6e4c7';
-const factoryAddr = '0xed9ae45a067cadc843e26d377c9cd8e963b299f1';
+const {
+  feeAddr,
+  usdcAddr,
+  factoryAddr,
+} = ADDRESSES.karuraTestnet;
 
 describe('XcmRouter', () => {
   // fixed

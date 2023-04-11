@@ -34,6 +34,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@acala-network/asset-router@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@acala-network/asset-router@workspace:."
+  dependencies:
+    "@acala-network/contracts": ^4.3.7
+    "@acala-network/eth-providers": ^2.6.2
+    "@certusone/wormhole-sdk": ^0.9.11
+    "@ethersproject/abi": ^5.4.7
+    "@ethersproject/providers": ^5.4.7
+    "@nomicfoundation/hardhat-chai-matchers": ^1.0.0
+    "@nomicfoundation/hardhat-foundry": ^1.0.0
+    "@nomicfoundation/hardhat-network-helpers": ^1.0.0
+    "@nomicfoundation/hardhat-toolbox": ^2.0.0
+    "@nomiclabs/hardhat-ethers": ^2.0.0
+    "@nomiclabs/hardhat-etherscan": ^3.0.0
+    "@typechain/ethers-v5": ^10.1.0
+    "@typechain/hardhat": ^6.1.2
+    "@types/chai": ^4.2.0
+    "@types/mocha": ">=9.1.0"
+    "@types/node": ">=12.0.0"
+    "@typescript-eslint/eslint-plugin": ^5.55.0
+    "@typescript-eslint/parser": ^5.55.0
+    chai: ^4.2.0
+    eslint: ^8.36.0
+    ethers: ^5.4.7
+    hardhat: ^2.13.0
+    hardhat-gas-reporter: ^1.0.8
+    solidity-coverage: ^0.8.0
+    ts-node: ">=8.0.0"
+    typechain: ^8.1.0
+    typescript: ">=4.5.0"
+  languageName: unknown
+  linkType: soft
+
 "@acala-network/contracts@npm:^4.3.7":
   version: 4.3.7
   resolution: "@acala-network/contracts@npm:4.3.7"
@@ -3760,40 +3794,6 @@ __metadata:
   checksum: fd9429d3a3d4fd61782eb3962ae76b6d08aa7383123fca0596020013b3ebd6647891a85b05ce821c47d1471ed1271f00b0545cf6a4326cf2fc91efcc3b0fbecf
   languageName: node
   linkType: hard
-
-"asset-router@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "asset-router@workspace:."
-  dependencies:
-    "@acala-network/contracts": ^4.3.7
-    "@acala-network/eth-providers": ^2.6.2
-    "@certusone/wormhole-sdk": ^0.9.11
-    "@ethersproject/abi": ^5.4.7
-    "@ethersproject/providers": ^5.4.7
-    "@nomicfoundation/hardhat-chai-matchers": ^1.0.0
-    "@nomicfoundation/hardhat-foundry": ^1.0.0
-    "@nomicfoundation/hardhat-network-helpers": ^1.0.0
-    "@nomicfoundation/hardhat-toolbox": ^2.0.0
-    "@nomiclabs/hardhat-ethers": ^2.0.0
-    "@nomiclabs/hardhat-etherscan": ^3.0.0
-    "@typechain/ethers-v5": ^10.1.0
-    "@typechain/hardhat": ^6.1.2
-    "@types/chai": ^4.2.0
-    "@types/mocha": ">=9.1.0"
-    "@types/node": ">=12.0.0"
-    "@typescript-eslint/eslint-plugin": ^5.55.0
-    "@typescript-eslint/parser": ^5.55.0
-    chai: ^4.2.0
-    eslint: ^8.36.0
-    ethers: ^5.4.7
-    hardhat: ^2.13.0
-    hardhat-gas-reporter: ^1.0.8
-    solidity-coverage: ^0.8.0
-    ts-node: ">=8.0.0"
-    typechain: ^8.1.0
-    typescript: ">=4.5.0"
-  languageName: unknown
-  linkType: soft
 
 "astral-regex@npm:^2.0.0":
   version: 2.0.0
