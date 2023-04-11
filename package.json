@@ -10,13 +10,13 @@
   ],
   "scripts": {
     "build": " hardhat compile",
-    "build:artifacts": " tsc -p tsconfig-cjs.json",
+    "build:dist": "yarn build && tsc -p tsconfig-cjs.json",
     "deploy": "hardhat run scripts/deploy.ts --network mandala",
     "deploy-testnet": "hardhat run scripts/deploy-testnet.ts --network karuraTestnet",
     "test": "hardhat test",
     "lint": "eslint scripts",
     "clean": "rm -rf out/ cache* typechain-types dist/",
-    "prepublish": "yarn clean && yarn build && build:artifacts"
+    "prepublish": "yarn clean && yarn build:dist"
   },
   "devDependencies": {
     "@acala-network/contracts": "^4.3.7",
