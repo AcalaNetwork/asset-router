@@ -15,9 +15,9 @@ export const loadSetups = async () => {
     ethers.getContractFactory('MockToken'),
   ]);
 
-  const { usdtAddr, factoryAddr, feeAddr } = ADDRESSES[network.name];
+  const { usdcAddr, factoryAddr, feeAddr } = ADDRESSES[network.name];
 
-  const usdt = Token.attach(usdtAddr);
+  const usdt = Token.attach(usdcAddr);
   const fee = FeeRegistry.attach(feeAddr);
   const factory = Factory.attach(factoryAddr).connect(relayer);
 
@@ -27,9 +27,9 @@ export const loadSetups = async () => {
     userAddr: user.address,
     relayerAddr: relayer.address,
     factoryAddr: factory.address,
-    usdtAddr: usdtAddr,
+    usdcAddr: usdcAddr,
     feeRegistryAddr: fee.address,
-    routerFee: ethers.utils.formatEther(await fee.getFee(usdtAddr)),
+    routerFee: ethers.utils.formatEther(await fee.getFee(usdcAddr)),
   });
   console.log('');
 
