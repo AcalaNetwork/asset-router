@@ -1,34 +1,42 @@
+import { XTOKENS } from '@acala-network/contracts/utils/Predeploy';
+import { CONTRACTS } from '@certusone/wormhole-sdk';
+
 export interface Addresses {
-  usdcAddr: string,
   tokenBridgeAddr: string,
   factoryAddr: string,
   feeAddr: string,
+  usdcAddr: string,
+  xtokensAddr: string,
 };
 
 // https://book.wormhole.com/reference/contracts.html#token-bridge
 export const ADDRESSES: { [key: string]: Addresses } = {
   karuraTestnet: {
-    usdcAddr: '0xE5BA1e8E6BBbdC8BbC72A58d68E74B13FcD6e4c7',
-    tokenBridgeAddr: '0xd11De1f930eA1F7Dd0290Fe3a2e35b9C91AEFb37',
+    tokenBridgeAddr: CONTRACTS.TESTNET.karura.token_bridge,
     factoryAddr: '0xed9ae45a067cadc843e26d377c9cd8e963b299f1',
     feeAddr: '0x8dA2DebebFE5cCe133a80e7114621192780765BB',
+    usdcAddr: '0xE5BA1e8E6BBbdC8BbC72A58d68E74B13FcD6e4c7',
+    xtokensAddr: XTOKENS,
   },
   acalaTestnet: {
-    usdcAddr: '',
-    tokenBridgeAddr: '0xebA00cbe08992EdD08ed7793E07ad6063c807004',
+    tokenBridgeAddr: CONTRACTS.TESTNET.acala.token_bridge,
     factoryAddr: '',
     feeAddr: '',
+    usdcAddr: '0x7E0CCD4209Ef7039901512fF9f6a01d0de0691e2',
+    xtokensAddr: XTOKENS,
   },
   karura: {
-    usdcAddr: '',
-    tokenBridgeAddr: '0xae9d7fe007b3327AA64A32824Aaac52C42a6E624',
+    tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
     factoryAddr: '',
     feeAddr: '',
+    usdcAddr: '0x1F3a10587A20114EA25Ba1b388EE2dD4A337ce27',
+    xtokensAddr: XTOKENS,
   },
   acala: {
-    usdcAddr: '',
-    tokenBridgeAddr: '0xae9d7fe007b3327AA64A32824Aaac52C42a6E624',
+    tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
     factoryAddr: '',
     feeAddr: '',
+    usdcAddr: '0x07DF96D1341A7d16Ba1AD431E2c847d978BC2bCe',
+    xtokensAddr: XTOKENS,
   },
 };

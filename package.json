@@ -1,6 +1,6 @@
 {
   "name": "@acala-network/asset-router",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "repository": "git@github.com:AcalaNetwork/asset-router.git",
   "author": "Acala Developers <hello@acala.network>",
@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": " hardhat compile",
-    "build:dist": "yarn build && tsc -p tsconfig-cjs.json",
+    "build:dist": "yarn build && tsc -p tsconfig-cjs.json && mv ./dist/scripts/* ./dist && rm -rf ./dist/scripts",
     "deploy": "hardhat run scripts/deploy.ts --network mandala",
     "deploy-testnet": "hardhat run scripts/deploy-testnet.ts --network karuraTestnet",
     "test": "hardhat test",
@@ -18,12 +18,15 @@
     "clean": "rm -rf out/ cache* typechain-types dist/",
     "prepublish": "yarn clean && yarn build:dist"
   },
-  "devDependencies": {
+  "dependencies": {
     "@acala-network/contracts": "^4.3.7",
     "@acala-network/eth-providers": "^2.6.2",
     "@certusone/wormhole-sdk": "^0.9.11",
     "@ethersproject/abi": "^5.4.7",
     "@ethersproject/providers": "^5.4.7",
+    "ethers": "^5.4.7"
+  },
+  "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
     "@nomicfoundation/hardhat-foundry": "^1.0.0",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
@@ -39,7 +42,6 @@
     "@typescript-eslint/parser": "^5.55.0",
     "chai": "^4.2.0",
     "eslint": "^8.36.0",
-    "ethers": "^5.4.7",
     "hardhat": "^2.13.0",
     "hardhat-gas-reporter": "^1.0.8",
     "solidity-coverage": "^0.8.0",
