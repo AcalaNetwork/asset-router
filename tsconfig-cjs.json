@@ -1,11 +1,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "target": "ES5",
     "module": "CommonJS",
     "outDir": "./dist",
     "declaration": true
   },
   "include": [
-    "./typechain-types"
+    "./typechain-types",
+    "./scripts/consts.ts"
   ]
 }
