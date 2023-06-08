@@ -2,11 +2,6 @@
 import { ethers, network } from 'hardhat';
 import { ADDRESSES } from './consts';
 
-export const gasOverride = {
-  gasPrice: '0x33a70303ea',
-  gasLimit: '0x329b140',
-};
-
 export const loadSetups = async () => {
   const [[deployer, user, relayer], FeeRegistry, Factory, Token] = await Promise.all([
     ethers.getSigners(),

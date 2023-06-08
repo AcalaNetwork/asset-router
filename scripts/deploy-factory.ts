@@ -2,11 +2,10 @@ import { ethers } from 'hardhat';
 import { EVM as EVM_ADDR } from '@acala-network/contracts/utils/KaruraAddress';
 import EVM_JSON from '@acala-network/contracts/build/contracts/EVM.json';
 import { Contract } from 'ethers';
-import { gasOverride } from './utils';
 
 async function main() {
   const Factory = await ethers.getContractFactory('Factory');
-  const factory = await Factory.deploy(gasOverride);
+  const factory = await Factory.deploy();
   await factory.deployed();
 
   console.log(`factory address: ${factory.address}`);
