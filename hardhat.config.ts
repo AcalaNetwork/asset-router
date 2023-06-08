@@ -21,6 +21,13 @@ const config: HardhatUserConfig = {
       },
       chainId: 596,
     },
+    karura: {
+      url: 'https://eth-rpc-karura.aca-staging.network',
+      accounts: [
+        '',
+      ],
+      chainId: 686,
+    },
   },
   mocha: {
     timeout: 600000, // 10 min

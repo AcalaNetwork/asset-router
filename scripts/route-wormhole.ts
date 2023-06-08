@@ -1,7 +1,7 @@
 import { CHAIN_ID_ETH, tryNativeToHexString } from '@certusone/wormhole-sdk';
 import { ethers } from 'hardhat';
 import { WormholeInstructionsStruct } from '../typechain-types/src/Factory';
-import { gasOverride, loadSetups } from './utils';
+import { loadSetups } from './utils';
 
 async function main() {
   const { deployer, user, relayer, usdt, fee, factory, tokenBridgeAddr } = await loadSetups();
@@ -18,7 +18,6 @@ async function main() {
     fee.address,
     wormholeInstructions,
     tokenBridgeAddr,
-    gasOverride,
   );
   console.log({ predictedRouterAddr: routerAddr });
 
@@ -40,7 +39,7 @@ async function main() {
   await _printBalance('init state');
 
   console.log('user xcming token to router ...');
-  await (await usdt.connect(user).transfer(routerAddr, ethers.utils.parseEther('0.001'), gasOverride)).wait();
+  await (await usdt.connect(user).transfer(routerAddr, ethers.utils.parseEther('0.001'))).wait();
   await _printBalance('after user xcm to router');
 
   console.log('deploying router and route ...');
@@ -49,7 +48,6 @@ async function main() {
     wormholeInstructions,
     tokenBridgeAddr,
     usdt.address,
-    gasOverride
   );
   const receipt = await tx.wait();
   await _printBalance('after router deposit to wormhole');
