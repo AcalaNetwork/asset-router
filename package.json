@@ -11,8 +11,6 @@
   "scripts": {
     "build": " hardhat compile",
     "build:dist": "yarn build && tsc -p tsconfig-cjs.json && mv ./dist/scripts/* ./dist && rm -rf ./dist/scripts",
-    "deploy": "hardhat run scripts/deploy.ts --network mandala",
-    "deploy-testnet": "hardhat run scripts/deploy-testnet.ts --network karuraTestnet",
     "test": "hardhat test",
     "lint": "eslint scripts",
     "clean": "rm -rf out/ cache* typechain-types dist/",
