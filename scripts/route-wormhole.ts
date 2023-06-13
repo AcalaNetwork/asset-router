@@ -1,14 +1,15 @@
-import { CHAIN_ID_ETH, tryNativeToHexString } from '@certusone/wormhole-sdk';
-import { ethers } from 'hardhat';
+import { network as curNetwork } from 'hardhat';
+import { CHAIN_ID_BSC, tryNativeToHexString } from '@certusone/wormhole-sdk';
 import { WormholeInstructionsStruct } from '../typechain-types/src/Factory';
-import { loadSetups } from './utils';
+import { getNetworNameFromHardhatNetwork, loadSetups } from './utils';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 
 async function main() {
-  const { deployer, user, relayer, usdt, fee, factory, tokenBridgeAddr } = await loadSetups();
+  const { deployer, user, relayer, usdc, fee, factory, tokenBridgeAddr, portalUrl, isMainnet } = await loadSetups();
 
-  const targetRecepient = Buffer.from(tryNativeToHexString(user.address, 'ethereum'), 'hex');
+  const targetRecepient = Buffer.from(tryNativeToHexString(user.address, CHAIN_ID_BSC), 'hex');
   const wormholeInstructions: WormholeInstructionsStruct = {
-    recipientChain: CHAIN_ID_ETH,
+    recipientChain: CHAIN_ID_BSC,
     recipient: targetRecepient,
     nonce: 0,
     arbiterFee: 0,
@@ -23,23 +24,24 @@ async function main() {
 
   const _printBalance = async (msg: string) => {
     const [deployerBal, userBal, relayerBal, routerBal] = await Promise.all([
-      usdt.balanceOf(deployer.address),
-      usdt.balanceOf(user.address),
-      usdt.balanceOf(relayer.address),
-      usdt.balanceOf(routerAddr),
+      usdc.balanceOf(deployer.address),
+      usdc.balanceOf(user.address),
+      usdc.balanceOf(relayer.address),
+      usdc.balanceOf(routerAddr),
     ]);
 
     console.log(msg, {
-      deployer: ethers.utils.formatEther(deployerBal),
-      user: ethers.utils.formatEther(userBal),
-      relayer: ethers.utils.formatEther(relayerBal),
-      router: ethers.utils.formatEther(routerBal),
+      deployer: formatUnits(deployerBal, 6),
+      user: formatUnits(userBal, 6),
+      relayer: formatUnits(relayerBal, 6),
+      router: formatUnits(routerBal, 6),
     });
   };
-  await _printBalance('init state');
+  await _printBalance('init state usdc balance:');
 
-  console.log('user xcming token to router ...');
-  await (await usdt.connect(user).transfer(routerAddr, ethers.utils.parseEther('0.001'))).wait();
+  const amount = isMainnet ? '0.06' : '0.001';
+  console.log(`user xcming ${amount} usdc to router ...`);
+  await (await usdc.connect(user).transfer(routerAddr, parseUnits(amount, 6))).wait();
   await _printBalance('after user xcm to router');
 
   console.log('deploying router and route ...');
@@ -47,12 +49,12 @@ async function main() {
     fee.address,
     wormholeInstructions,
     tokenBridgeAddr,
-    usdt.address,
+    usdc.address,
   );
   const receipt = await tx.wait();
   await _printBalance('after router deposit to wormhole');
 
-  console.log(`token bridged to wormhole! \nRedeem at https://wormhole-foundation.github.io/example-token-bridge-ui/#/redeem with txHash ${receipt.transactionHash}`);
+  console.log(`token bridged to wormhole! \nRedeem at ${portalUrl} with txHash ${receipt.transactionHash} and network ${getNetworNameFromHardhatNetwork(curNetwork) }`);
 }
 
 main().catch((error) => {

@@ -13,7 +13,7 @@ async function main() {
   //   amount: parseUnits('0.0002', decimals),
   // }];
 
-  const feeConfig = Object.entries(ROUTER_TOKEN_INFO[KARURA]).map(([_tokenName, info]) => ({
+  const feeConfig = Object.entries(ROUTER_TOKEN_INFO[KARURA]).map(([, info]) => ({
     token: info.addr,
     amount: parseUnits(info.fee.toString(), info.decimals),
   }));

@@ -1,18 +1,42 @@
 
-import { ethers, network } from 'hardhat';
-import { ADDRESSES } from './consts';
+import { ethers, network as curNetwork } from 'hardhat';
+import { ACALA, ADDRESSES, KARURA, KARURA_TESTNET } from './consts';
+import { formatUnits } from 'ethers/lib/utils';
+import { Network } from 'hardhat/types';
+
+export const getNetworNameFromHardhatNetwork = (network: Network) => {
+  const networkName = ({
+    karuraTestnet: KARURA_TESTNET,
+    karura: KARURA,
+    acala: ACALA,
+  })[network.name] as typeof KARURA_TESTNET | typeof KARURA | typeof ACALA;
+
+  if (!networkName) {
+    throw new Error(`unsupported network: ${networkName}`);
+  };
+
+  return networkName;
+};
 
 export const loadSetups = async () => {
-  const [[deployer, user, relayer], FeeRegistry, Factory, Token] = await Promise.all([
+  // eslint-disable-next-line prefer-const
+  let [[deployer, user, relayer], FeeRegistry, Factory, Token] = await Promise.all([
     ethers.getSigners(),
     ethers.getContractFactory('FeeRegistry'),
     ethers.getContractFactory('Factory'),
     ethers.getContractFactory('MockToken'),
   ]);
 
-  const { usdcAddr, factoryAddr, feeAddr } = ADDRESSES[network.name];
+  const networkName = getNetworNameFromHardhatNetwork(curNetwork);
 
-  const usdt = Token.attach(usdcAddr);
+  const isMainnet = [KARURA, ACALA].includes(networkName);
+  if (isMainnet) {
+    relayer = deployer;
+  }
+
+  const { usdcAddr, factoryAddr, feeAddr } = ADDRESSES[networkName];
+
+  const usdc = Token.attach(usdcAddr);
   const fee = FeeRegistry.attach(feeAddr);
   const factory = Factory.attach(factoryAddr).connect(relayer);
 
@@ -24,9 +48,23 @@ export const loadSetups = async () => {
     factoryAddr: factory.address,
     usdcAddr: usdcAddr,
     feeRegistryAddr: fee.address,
-    routerFee: ethers.utils.formatEther(await fee.getFee(usdcAddr)),
+    routerFee: formatUnits(await fee.getFee(usdcAddr), 6),
   });
   console.log('');
 
-  return { deployer, user, relayer, usdt, fee, factory, ...ADDRESSES[network.name] };
+  const portalUrl = isMainnet
+    ? 'https://www.portalbridge.com/#/redeem'
+    : 'https://wormhole-foundation.github.io/example-token-bridge-ui/#/redeem';
+
+  return {
+    deployer,
+    user,
+    relayer,
+    usdc,
+    fee,
+    factory,
+    portalUrl,
+    isMainnet,
+    ...ADDRESSES[networkName],
+  };
 };

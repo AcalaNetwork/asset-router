@@ -7,7 +7,8 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 import { FeeRegistry, MockToken } from '../typechain-types';
 import { Factory, XcmInstructionsStruct } from '../typechain-types/src/Factory';
-import { ADDRESSES } from '../scripts/consts';
+import { ADDRESSES, KARURA, KARURA_TESTNET } from '../scripts/consts';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 
 type Resolved<T> = T extends Promise<infer U> ? U : T;
 
@@ -15,7 +16,7 @@ const {
   feeAddr,
   usdcAddr,
   factoryAddr,
-} = ADDRESSES.karuraTestnet;
+} = ADDRESSES[KARURA];
 
 describe('XcmRouter', () => {
   // fixed
@@ -45,9 +46,9 @@ describe('XcmRouter', () => {
     const userBal = BigNumber.from(0);    // TODO: fetch basilisk balance
 
     console.log({
-      deployerBal: Number(ethers.utils.formatUnits(deployerBal, decimals)),
-      relayerBal: Number(ethers.utils.formatUnits(relayerBal, decimals)),
-      routerBal: Number(ethers.utils.formatUnits(routerBal, decimals)),
+      deployerBal: Number(formatUnits(deployerBal, decimals)),
+      relayerBal: Number(formatUnits(relayerBal, decimals)),
+      routerBal: Number(formatUnits(routerBal, decimals)),
       userBal: userBal.toNumber(),
     });
 
@@ -79,7 +80,7 @@ describe('XcmRouter', () => {
     console.log(`factory address: ${factory.address}`);
     console.log(`xTokens address: ${xTokens.address}`);
     console.log(`token decimals: ${decimals}`);
-    console.log(`router fee: ${Number(ethers.utils.formatUnits(routingFee, decimals))}`);
+    console.log(`router fee: ${Number(formatUnits(routingFee, decimals))}`);
   });
 
   it('predict router address', async () => {
@@ -97,12 +98,15 @@ describe('XcmRouter', () => {
     };
 
     https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fkarura-testnet.aca-staging.network%2Frpc%2Fkarura%2Fws#/extrinsics/decode/0xe1028400d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d01545773f0488bad93ad9750930809f02c194b3189daa4f5024c03879e24cf19669e76e5acdd38e81959ea94e3aa94695e7c6ad393621b9308b353be9db1ed2687f400310300360002e5ba1e8e6bbbdc8bbc72a58d68e74b13fcd6e4c7e803000000000000000000000000000003010200a9200100d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d00
+
+    https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fkarura-rpc-0.aca-api.network#/extrinsics/decode/0xe102840088b3cb383e25bafa7195ab63bc677e1bd6cb27b97cd5d9e91e59f58bf1d3ea6801b6a73f771288ec10f617ee66a19fba8dbdad42a9b1acab55ffcf0800b8280043422d8152c4a38cedc76b9ed8371f8163e6eecd98bf5748a4d8ca79e173c36a8d14005d02003600024bb6afb5fa2b07a5d1c499e1c3ddb5a15e709a710080e03779c31100000000000000000003010200a920010088b3cb383e25bafa7195ab63bc677e1bd6cb27b97cd5d9e91e59f58bf1d3ea6800
                                                                                                                                                                                                                                                                           ----- */
-    const dest = '0x03010200a9200100d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d';
+    // const dest = '0x03010200a9200100d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d';  // karura testnet
+    const dest = '0x03010200a920010088b3cb383e25bafa7195ab63bc677e1bd6cb27b97cd5d9e91e59f58bf1d3ea68';  // karura
     const weight = '0x00';    // unlimited
 
     xcmInstruction = { dest, weight };
-    routerAddr = await factory.callStatic.deployXcmRouter(fee.address, xcmInstruction, gasOverride);
+    routerAddr = await factory.callStatic.deployXcmRouter(fee.address, xcmInstruction);
     console.log({ predictedRouterAddr: routerAddr });
   });
 
@@ -118,11 +122,10 @@ describe('XcmRouter', () => {
   it('after wormhole withdraw to router', async () => {
     console.log('\n-------------------- after wormhole withdraw to router --------------------');
     const ROUTE_AMOUNT = 0.01;
-    const routeAmount = ethers.utils.parseUnits(String(ROUTE_AMOUNT), decimals);
+    const routeAmount = parseUnits(String(ROUTE_AMOUNT), decimals);
     await (await usdc.connect(deployer).transfer(
       routerAddr,
       routeAmount,
-      gasOverride
     )).wait();
 
     bal1 = await fetchTokenBalances();
@@ -137,7 +140,6 @@ describe('XcmRouter', () => {
       fee.address,
       xcmInstruction,
       usdc.address,
-      gasOverride,
     );
 
     const XcmRouter = await ethers.getContractFactory('XcmRouter');

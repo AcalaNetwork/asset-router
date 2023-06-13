@@ -17,44 +17,46 @@ export interface RouterTokenInfo {
   fee: number,
 }
 
+export const ACALA = 'ACALA';
+export const KARURA = 'KARURA';
+export const ACALA_TESTNET = 'ACALA_TESTNET';
+export const KARURA_TESTNET = 'KARURA_TESTNET';
+export const ETH = 'ETH';
+export const BSC = 'BSC';
+export const ARB = 'ARB';
+export const POLYGON = 'POLYGON';
+
 // https://book.wormhole.com/reference/contracts.html#token-bridge
-export const ADDRESSES: { [key: string]: Addresses } = {
-  karuraTestnet: {
+export const ADDRESSES = {
+  [KARURA_TESTNET]: {
     tokenBridgeAddr: CONTRACTS.TESTNET.karura.token_bridge,
     factoryAddr: '0xed9ae45a067cadc843e26d377c9cd8e963b299f1',
     feeAddr: '0x8dA2DebebFE5cCe133a80e7114621192780765BB',
     usdcAddr: '0xE5BA1e8E6BBbdC8BbC72A58d68E74B13FcD6e4c7',
     xtokensAddr: XTOKENS,
   },
-  acalaTestnet: {
+  [ACALA_TESTNET]: {
     tokenBridgeAddr: CONTRACTS.TESTNET.acala.token_bridge,
     factoryAddr: '',
     feeAddr: '',
     usdcAddr: '0x7E0CCD4209Ef7039901512fF9f6a01d0de0691e2',
     xtokensAddr: XTOKENS,
   },
-  karura: {
+  [KARURA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
     factoryAddr: '0xFa0e2F000Fd07f1820383528357dF6aa50E44586',
     feeAddr: '0xF25176942A23C703aB7b79f50fF7eaBb6eee8d82',
     usdcAddr: '0x1F3a10587A20114EA25Ba1b388EE2dD4A337ce27',
     xtokensAddr: XTOKENS,
   },
-  acala: {
+  [ACALA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
     factoryAddr: '',
     feeAddr: '',
     usdcAddr: '0x07DF96D1341A7d16Ba1AD431E2c847d978BC2bCe',
     xtokensAddr: XTOKENS,
   },
-};
-
-export const ACALA = 'ACALA';
-export const KARURA = 'KARURA';
-export const ETH = 'ETH';
-export const BSC = 'BSC';
-export const ARB = 'ARB';
-export const POLYGON = 'POLYGON';
+} as const;
 
 export const ROUTER_TOKEN_INFO: {
   [karuraOrAcala: string]: {

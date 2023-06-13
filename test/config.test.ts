@@ -25,21 +25,21 @@ const getWrappedAddr = async (
   tokenAddr: string,
 ) => {
   const dstTokenBridge = CONTRACTS.MAINNET[dstNetwork.toLowerCase() as ChainName].token_bridge;
-  const wormholeChainId = ({
+  const srcWormholeChainId = ({
     [ETH]: 2,
     [ARB]: 23,
     [BSC]: 4,
     [POLYGON]: 5,
   })[srcNetwork] as ChainId;
 
-  if (!dstTokenBridge || !wormholeChainId) {
-    throw new Error('cannot find dstTokenBridge or wormholeChainId!');
+  if (!dstTokenBridge || !srcWormholeChainId) {
+    throw new Error('cannot find dstTokenBridge or srcWormholeChainId!');
   }
 
   const tokenBridge = Bridge__factory.connect(dstTokenBridge, getProvider(dstNetwork));
   return tokenBridge.wrappedAsset(
-    wormholeChainId,
-    Buffer.from(tryNativeToHexString(tokenAddr, wormholeChainId), 'hex'),
+    srcWormholeChainId,
+    Buffer.from(tryNativeToHexString(tokenAddr, srcWormholeChainId), 'hex'),
   );
 };
 
