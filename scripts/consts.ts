@@ -165,4 +165,4 @@ export const ROUTER_TOKEN_INFO: {
   },
   [ACALA]: {
   },
-};
+} as const;
