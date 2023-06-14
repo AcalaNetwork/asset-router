@@ -24,7 +24,6 @@ const config: HardhatUserConfig = {
     karura: {
       url: 'https://eth-rpc-karura.aca-staging.network',
       accounts: [
-        '',
       ],
       chainId: 686,
     },
