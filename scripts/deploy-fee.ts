@@ -1,5 +1,5 @@
-import { ethers, network } from 'hardhat';
-import { ADDRESSES, ROUTER_TOKEN_INFO, KARURA } from './consts';
+import { ethers } from 'hardhat';
+import {  ROUTER_TOKEN_INFO, CHAIN } from './consts';
 import { parseUnits } from 'ethers/lib/utils';
 
 async function main() {
@@ -13,7 +13,7 @@ async function main() {
   //   amount: parseUnits('0.0002', decimals),
   // }];
 
-  const feeConfig = Object.entries(ROUTER_TOKEN_INFO[KARURA]).map(([_tokenName, info]) => ({
+  const feeConfig = Object.entries(ROUTER_TOKEN_INFO[CHAIN.KARURA]).map(([, info]) => ({
     token: info.addr,
     amount: parseUnits(info.fee.toString(), info.decimals),
   }));
