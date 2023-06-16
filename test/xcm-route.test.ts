@@ -15,7 +15,7 @@ const {
   feeAddr,
   usdcAddr,
   factoryAddr,
-} = ADDRESSES.karuraTestnet;
+} = ADDRESSES.KARURA_TESTNET;
 
 describe('XcmRouter', () => {
   // fixed
@@ -102,7 +102,7 @@ describe('XcmRouter', () => {
     const weight = '0x00';    // unlimited
 
     xcmInstruction = { dest, weight };
-    routerAddr = await factory.callStatic.deployXcmRouter(fee.address, xcmInstruction, gasOverride);
+    routerAddr = await factory.callStatic.deployXcmRouter(fee.address, xcmInstruction);
     console.log({ predictedRouterAddr: routerAddr });
   });
 
@@ -122,7 +122,6 @@ describe('XcmRouter', () => {
     await (await usdc.connect(deployer).transfer(
       routerAddr,
       routeAmount,
-      gasOverride
     )).wait();
 
     bal1 = await fetchTokenBalances();
@@ -137,7 +136,6 @@ describe('XcmRouter', () => {
       fee.address,
       xcmInstruction,
       usdc.address,
-      gasOverride,
     );
 
     const XcmRouter = await ethers.getContractFactory('XcmRouter');

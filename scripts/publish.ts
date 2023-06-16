@@ -17,7 +17,7 @@ async function main() {
   console.log(`publishing contract ${targetContract} ...`);
   await (await evm.publishContract(targetContract)).wait();
 
-  console.log('done 🎉')
+  console.log('done 🎉');
 }
 
 main().catch((error) => {
