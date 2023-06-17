@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import XtokensJSON from '@acala-network/contracts/build/contracts/IXtokens.json';
+import { Xtokens__factory } from '@acala-network/contracts/typechain';
 import { XTOKENS } from '@acala-network/contracts/utils/Predeploy';
 import { BigNumber, Contract } from 'ethers';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
@@ -69,8 +69,7 @@ describe('XcmRouter', () => {
     usdc = Token.attach(usdcAddr);
     fee = Fee.attach(feeAddr);
     factory = Factory.attach(factoryAddr);
-    // xTokens = Xtokens__factory.connect(XTOKENS, deployer);   // TODO: build typechain es5
-    xTokens = new ethers.Contract(XTOKENS, XtokensJSON.abi, deployer);
+    xTokens = Xtokens__factory.connect(XTOKENS, deployer);
     decimals = await usdc.decimals();
     routingFee = await fee.getFee(usdc.address);
 

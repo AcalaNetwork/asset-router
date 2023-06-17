@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat';
+import { ethers, run } from 'hardhat';
 import {  ROUTER_TOKEN_INFO, CHAIN } from './consts';
 import { parseUnits } from 'ethers/lib/utils';
 
@@ -27,6 +27,11 @@ async function main() {
   await fee.deployed();
 
   console.log(`feeRegistry address: ${fee.address}`);
+
+  await run('verify:verify', {
+    address: fee.address,
+    constructorArguments: [feeConfig],
+  });
 }
 
 main().catch((error) => {
