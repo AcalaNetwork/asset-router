@@ -23,10 +23,7 @@ const config: HardhatUserConfig = {
     },
     karura: {
       url: 'https://eth-rpc-karura.aca-staging.network',
-      accounts: {
-        mnemonic: 'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm',
-        path: 'm/44\'/60\'/0\'/0',
-      },
+      accounts: [],
       chainId: 686,
     },
   },
