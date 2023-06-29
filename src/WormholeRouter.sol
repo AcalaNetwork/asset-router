@@ -26,7 +26,8 @@ contract WormholeRouter is BaseRouter {
     }
 
     function routeImpl(ERC20 token) internal override {
-        token.approve(_tokenBridgeAddress, token.balanceOf(address(this)));
+        bool approved = token.approve(_tokenBridgeAddress, token.balanceOf(address(this)));
+        require(approved, "WormholeRouter: approve failed");
 
         ITokenBridge(_tokenBridgeAddress).transferTokens(
             address(token),

@@ -21,8 +21,9 @@ contract XcmRouter is BaseRouter {
     }
 
     function routeImpl(ERC20 token) internal override {
-        IXtokens(XTOKENS).transfer(
+        bool success = IXtokens(XTOKENS).transfer(
             address(token), token.balanceOf(address(this)), _instructions.dest, _instructions.weight
         );
+        require(success, "XcmRouter: transfer failed");
     }
 }
