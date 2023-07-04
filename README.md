@@ -19,8 +19,6 @@ forge test
 ```
 
 ## Run with Hardhat
-**NOTE**: current node version has [a bug with CREATE2](https://github.com/AcalaNetwork/Acala/pull/2497), so it's recommended to use a chopstick fork of karura testnet，and restart after every run. Otherwise routing for the second time will fail.
-
 - install deps
 ```
 yarn
