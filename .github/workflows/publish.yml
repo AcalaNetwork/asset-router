@@ -20,6 +20,9 @@ jobs:
           cache: 'yarn'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: setup Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
       - name: install dependencies
         run: yarn install --immutable
 
