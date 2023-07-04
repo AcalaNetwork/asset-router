@@ -2,7 +2,7 @@ name: Publish
 on:
   push:
     branches:
-      - add-publish-action
+      - master
 
 jobs:
   publish:
