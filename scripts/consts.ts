@@ -48,7 +48,7 @@ export const ADDRESSES = {
   },
   [CHAIN.KARURA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
-    factoryAddr: '0xFa0e2F000Fd07f1820383528357dF6aa50E44586',
+    factoryAddr: '0x38bCDdc086eC0f68390d7c6452361036469D1203',
     feeAddr: '0xF25176942A23C703aB7b79f50fF7eaBb6eee8d82',
     usdcAddr: '0x1F3a10587A20114EA25Ba1b388EE2dD4A337ce27',
   },
