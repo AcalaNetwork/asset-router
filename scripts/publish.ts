@@ -1,13 +1,13 @@
 import { ethers } from 'hardhat';
 import { EVM as EVM_ADDR } from '@acala-network/contracts/utils/Predeploy';
-import EVM_JSON from '@acala-network/contracts/build/contracts/EVM.json';
-import { Contract } from 'ethers';
+import { EVM__factory } from '@acala-network/contracts/typechain';
+import { ADDRESSES } from './consts';
 
-const targetContract = '0xFa0e2F000Fd07f1820383528357dF6aa50E44586';
+const targetContract = ADDRESSES.KARURA.factoryAddr;
 
 async function main() {
   const [deployer] = await ethers.getSigners();
-  const evm = new Contract(EVM_ADDR, EVM_JSON.abi, deployer);
+  const evm = EVM__factory.connect(EVM_ADDR, deployer);
   const developerStatus = evm.developerStatus(deployer.address);
   if (!developerStatus) {
     console.log('enabling developer status ...');
