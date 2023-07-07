@@ -13,8 +13,8 @@ import { CONTRACTS, ChainName, tryNativeToHexString } from '@certusone/wormhole-
 
 const getProvider = (networkName: string) => {
   const ethRpc = ({
-    [CHAIN.ACALA]: 'https://eth-rpc-acala.aca-staging.network',
-    [CHAIN.KARURA]: 'https://eth-rpc-karura.aca-staging.network',
+    [CHAIN.ACALA]: 'https://eth-rpc-acala.aca-api.network',
+    [CHAIN.KARURA]: 'https://eth-rpc-karura.aca-api.network',
     [CHAIN.ETH]: 'https://ethereum.publicnode.com',
     [CHAIN.ARB]: 'https://endpoints.omniatech.io/v1/arbitrum/one/public',
     [CHAIN.BSC]: 'https://bsc.publicnode.com',
@@ -46,24 +46,32 @@ const getWrappedAddr = async (
 
 describe('config', () => {
   it('source token and dst token match', async () => {
-    const dstNetwork = CHAIN.KARURA;
-    for (const [tokenName, info] of Object.entries(ROUTER_TOKEN_INFO[dstNetwork])) {
+    for (const [tokenName, info] of Object.entries(ROUTER_TOKEN_INFO)) {
       process.stdout.write(`verifying ${tokenName} ...`);
       const srcToken = MockToken__factory.connect(info.originAddr, getProvider(info.originChain));
 
       const [
         symbol,
         decimals,
-        wrappedAddr,
+        wrappedAddrKarura,
+        wrappedAddrAcala,
       ] = await Promise.all([
         srcToken.symbol(),
         srcToken.decimals(),
-        getWrappedAddr(dstNetwork, info.originChain, info.originAddr),
+        getWrappedAddr(CHAIN.KARURA, info.originChain, info.originAddr),
+        getWrappedAddr(CHAIN.ACALA, info.originChain, info.originAddr),
       ]);
 
       expect(symbol).to.equal(tokenName.toUpperCase());
       expect(decimals).to.equal(info.decimals);
-      expect(wrappedAddr).to.equal(info.addr);
+
+      if (info.karuraAddr) {
+        expect(wrappedAddrKarura).to.equal(info.karuraAddr);
+      }
+
+      if (info.acalaAddr) {
+        expect(wrappedAddrAcala).to.equal(info.acalaAddr);
+      }
       console.log('ok');
     }
   });
