@@ -82,7 +82,7 @@ export const ROUTER_TOKEN_INFO = {
     originChain: CHAIN.BSC,
     originAddr: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
     karuraAddr: '0x8cc494086Db58859bDDC5Df0F33679dFe3729a03',
-    acalaAddr: null,
+    acalaAddr: '0xb05122241f63A69A6435de54981b743707Fd17d5',
     decimals: 18,
     fee: 0.00016,
   },
