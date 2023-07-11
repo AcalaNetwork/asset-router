@@ -29,6 +29,11 @@ const config: HardhatUserConfig = {
       accounts: process.env.KEY ? [process.env.KEY] : [],
       chainId: 686,
     },
+    acala: {
+      url: 'https://eth-rpc-acala.aca-api.network',
+      accounts: process.env.KEY ? [process.env.KEY] : [],
+      chainId: 787,
+    },
   },
   mocha: {
     timeout: 600000, // 10 min

@@ -3,7 +3,7 @@ import { EVM as EVM_ADDR } from '@acala-network/contracts/utils/Predeploy';
 import { EVM__factory } from '@acala-network/contracts/typechain';
 import { ADDRESSES } from './consts';
 
-const targetContract = ADDRESSES.KARURA.factoryAddr;
+const targetContract = ADDRESSES.ACALA.factoryAddr;
 
 async function main() {
   const [deployer] = await ethers.getSigners();
