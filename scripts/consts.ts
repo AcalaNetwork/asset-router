@@ -54,7 +54,7 @@ export const ADDRESSES = {
     usdcAddr: '0x1F3a10587A20114EA25Ba1b388EE2dD4A337ce27',
   },
   [CHAIN.ACALA]: {
-    tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
+    tokenBridgeAddr: CONTRACTS.MAINNET.acala.token_bridge,
     factoryAddr: '0x4D72F3b3e6D2AFeD99923137a04b9Cd9Cd2F21C5',
     feeAddr: '0x3638ebA6948784cefF8A2dE3534Cd4923FAd6f0a',
     usdcAddr: '0x07DF96D1341A7d16Ba1AD431E2c847d978BC2bCe',
