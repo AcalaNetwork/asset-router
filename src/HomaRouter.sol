@@ -17,7 +17,7 @@ struct HomaInstructions {
 
 contract HomaRouter is BaseRouter {
     using SafeTransferLib for ERC20;
-    
+
     HomaInstructions private _instructions;
 
     constructor(FeeRegistry fees, HomaInstructions memory instructions) BaseRouter(fees) {

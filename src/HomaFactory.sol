@@ -19,11 +19,8 @@ contract HomaFactory {
         // no need to use salt as we want to keep the router address the same for the same fees &instructions
         bytes32 salt;
 
-        HomaInstructions memory inst = HomaInstructions({
-            stakingToken: STAKING_TOKEN,
-            liquidToken: LIQUID_TOKEN,
-            recipient: recipient
-        });
+        HomaInstructions memory inst =
+            HomaInstructions({ stakingToken: STAKING_TOKEN, liquidToken: LIQUID_TOKEN, recipient: recipient });
 
         HomaRouter router;
         try new HomaRouter{salt: salt}(fees, inst) returns (HomaRouter router_) {
@@ -59,5 +56,4 @@ contract HomaFactory {
         HomaRouter router = deployHomaRouter(fees, recipient);
         router.routeNoFee(token);
     }
-
 }
