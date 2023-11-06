@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import "forge-std/console.sol";
-
 import { ERC20 } from "solmate/tokens/ERC20.sol";
 import { SafeTransferLib } from "solmate/utils/SafeTransferLib.sol";
 import { IHoma } from "@acala-network/contracts/homa/IHoma.sol";
@@ -47,7 +45,6 @@ contract HomaRouter is BaseRouter {
 
     function transfer(ERC20 token, bytes32 addr) private {
         address recipient = toEvmAddress(addr);
-        console.log("recipient:", recipient);
         if (recipient == address(0)) {
             // Substrate account
             // This will fail if token is not a native token.
