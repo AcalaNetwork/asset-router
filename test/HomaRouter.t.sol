@@ -13,9 +13,12 @@ contract HomaRouterTest is Test {
     MockToken public stakingToken;
     MockToken public liquidToken;
     MockToken public otherToken;
-    address public alice = address(0x1);
-    address public bob = address(0x2);
-    address public charlie = address(0x3);
+    address public alice = address(0x01010101010101010101);
+    address public bob = address(0x02020202020202020202);
+    address public charlie = address(0x03030303030303030303);
+    bytes32 public alice32 = bytes32(uint256(0x0404040404040404040404040404040404040404040404040404040404040404));
+    bytes32 public bob32 = bytes32(uint256(0x0505050505050505050505050505050505050505050505050505050505050505));
+    bytes32 public charlie32 = bytes32(uint256(0x0606060606060606060606060606060606060606060606060606060606060606));
 
     function setUp() public {
         stakingToken = new MockToken("StakingToken", "ST");

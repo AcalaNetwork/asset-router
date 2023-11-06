@@ -9,6 +9,7 @@ import { HOMA } from "@acala-network/contracts/utils/Predeploy.sol";
 
 import { BaseRouter } from "./BaseRouter.sol";
 import { FeeRegistry } from "./FeeRegistry.sol";
+import { AccountHelper } from "./AccountHelper.sol";
 
 struct HomaInstructions {
     ERC20 stakingToken;
@@ -25,45 +26,14 @@ contract HomaRouter is BaseRouter {
         _instructions = instructions;
     }
 
-    function toEvmAddress(bytes32 addr) private pure returns (address) {
-        bytes32 prefix = bytes32(uint256(0x65766d3a00000000000000000000000000000000000000000000000000000000));
-        bool checkPrefix = addr & prefix == prefix;
-        if (!checkPrefix) {
-            return address(0);
-        }
-
-        bytes32 suffix = bytes32(uint256(0x000000000000000000000000000000000000000000000000ffffffffffffffff));
-        bool checkSuffix = addr & suffix == 0;
-        if (!checkSuffix) {
-            return address(0);
-        }
-
-        // convert addr[4..24] to address
-        address result = address(bytes20(addr << 32));
-        return result;
-    }
-
-    function transfer(ERC20 token, bytes32 addr) private {
-        address recipient = toEvmAddress(addr);
-        if (recipient == address(0)) {
-            // Substrate account
-            // This will fail if token is not a native token.
-            // That means user is doing something wrong and will lose their tokens.
-            IToken(address(token)).transferToAccountId32(addr, token.balanceOf(address(this)));
-        } else {
-            // EVM account
-            token.safeTransfer(recipient, token.balanceOf(address(this)));
-        }
-    }
-
     function routeImpl(ERC20 token) internal override {
         if (token == _instructions.stakingToken) {
             bool success = IHoma(HOMA).mint(token.balanceOf(address(this)));
             require(success, "HomaRouter: mint failed");
-            transfer(_instructions.liquidToken, _instructions.recipient);
+            AccountHelper.transferToken(_instructions.liquidToken, _instructions.recipient, _instructions.liquidToken.balanceOf(address(this)));
         } else {
             // received token is not staking token, transfer it to recipient to avoid it stuck in this contract
-            transfer(token, _instructions.recipient);
+            AccountHelper.transferToken(token, _instructions.recipient, token.balanceOf(address(this)));
         }
     }
 }
