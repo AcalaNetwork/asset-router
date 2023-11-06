@@ -34,11 +34,10 @@ contract HomaRouter is BaseRouter {
             return address(0);
         }
 
-        // check if addr[24..] are all zeros
-        for (uint256 i = 24; i < 32; i++) {
-            if (addr[i] != 0) {
-                return address(0);
-            }
+        bytes32 suffix = bytes32(uint256(0x000000000000000000000000000000000000000000000000ffffffffffffffff));
+        bool checkSuffix = addr & suffix == 0;
+        if (!checkSuffix) {
+            return address(0);
         }
 
         // convert addr[4..24] to address
