@@ -15,7 +15,7 @@ contract HomaFactory {
         LIQUID_TOKEN = liquidToken;
     }
 
-    function deployHomaRouter(FeeRegistry fees, address recipient) public returns (HomaRouter) {
+    function deployHomaRouter(FeeRegistry fees, bytes32 recipient) public returns (HomaRouter) {
         // no need to use salt as we want to keep the router address the same for the same fees &instructions
         bytes32 salt;
 
@@ -47,12 +47,12 @@ contract HomaFactory {
         return router;
     }
 
-    function deployHomaRouterAndRoute(FeeRegistry fees, address recipient, ERC20 token) public {
+    function deployHomaRouterAndRoute(FeeRegistry fees, bytes32 recipient, ERC20 token) public {
         HomaRouter router = deployHomaRouter(fees, recipient);
         router.route(token, msg.sender);
     }
 
-    function deployHomaRouterAndRouteNoFee(FeeRegistry fees, address recipient, ERC20 token) public {
+    function deployHomaRouterAndRouteNoFee(FeeRegistry fees, bytes32 recipient, ERC20 token) public {
         HomaRouter router = deployHomaRouter(fees, recipient);
         router.routeNoFee(token);
     }

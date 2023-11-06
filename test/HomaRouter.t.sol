@@ -34,8 +34,15 @@ contract HomaRouterTest is Test {
         vm.store(address(HOMA), bytes32(uint256(1)), bytes32(uint256(uint160(address(liquidToken)))));
     }
 
+    function fromEvmAddress(address addr) public pure returns (bytes32) {
+        // convert addr to bytes32 with prefix of `evm:` and suffix of 8 bytes of zeros
+        bytes32 prefix = bytes32(uint256(0x65766d3a00000000000000000000000000000000000000000000000000000000));
+        bytes32 result = bytes32(uint256(uint160(addr))) << 64;
+        return result | prefix;
+    }
+
     function testRouteWithFee() public {
-        HomaInstructions memory inst = HomaInstructions(stakingToken, liquidToken, alice);
+        HomaInstructions memory inst = HomaInstructions(stakingToken, liquidToken, fromEvmAddress(alice));
         HomaRouter router = new HomaRouter(fees, inst);
 
         stakingToken.transfer(address(router), 5 ether);
@@ -50,7 +57,7 @@ contract HomaRouterTest is Test {
     }
 
     function testRouteWithFeeWithOtherRecipient() public {
-        HomaInstructions memory inst = HomaInstructions(stakingToken, liquidToken, alice);
+        HomaInstructions memory inst = HomaInstructions(stakingToken, liquidToken, fromEvmAddress(alice));
         HomaRouter router = new HomaRouter(fees, inst);
 
         stakingToken.transfer(address(router), 5 ether);
@@ -65,7 +72,7 @@ contract HomaRouterTest is Test {
     }
 
     function testRouteWithoutFee() public {
-        HomaInstructions memory inst = HomaInstructions(stakingToken, liquidToken, alice);
+        HomaInstructions memory inst = HomaInstructions(stakingToken, liquidToken, fromEvmAddress(alice));
         HomaRouter router = new HomaRouter(fees, inst);
 
         stakingToken.transfer(address(router), 5 ether);
@@ -80,7 +87,7 @@ contract HomaRouterTest is Test {
     }
 
     function testRouteForUnknownToken() public {
-        HomaInstructions memory inst = HomaInstructions(stakingToken, liquidToken, alice);
+        HomaInstructions memory inst = HomaInstructions(stakingToken, liquidToken, fromEvmAddress(alice));
         HomaRouter router = new HomaRouter(fees, inst);
 
         otherToken.transfer(address(router), 5 ether);
