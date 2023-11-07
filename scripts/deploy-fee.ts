@@ -1,5 +1,5 @@
 import { ethers, run, network } from 'hardhat';
-import {  ROUTER_TOKEN_INFO } from './consts';
+import { ROUTER_TOKEN_INFO } from './consts';
 import { parseUnits } from 'ethers/lib/utils';
 import { FeeStruct } from '../typechain-types/src/FeeRegistry';
 

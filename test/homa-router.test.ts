@@ -1,14 +1,14 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
 import { BigNumber } from 'ethers';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { DOT, LDOT } from '@acala-network/contracts/utils/AcalaTokens';
 import { HOMA } from '@acala-network/contracts/utils/Predeploy';
-
-import { FeeRegistry, HomaFactory, MockToken } from '../typechain-types';
-import { ADDRESSES } from '../scripts/consts';
-import { formatEther, formatUnits, parseEther, parseUnits } from 'ethers/lib/utils';
 import { IHoma__factory } from '@acala-network/contracts/typechain';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { ethers } from 'hardhat';
+import { expect } from 'chai';
+import { formatEther, formatUnits, parseEther, parseUnits } from 'ethers/lib/utils';
+
+import { ADDRESSES } from '../scripts/consts';
+import { FeeRegistry, HomaFactory, MockToken } from '../typechain-types';
 
 type Resolved<T> = T extends Promise<infer U> ? U : T;
 
