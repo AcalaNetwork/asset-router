@@ -30,7 +30,9 @@ contract HomaRouter is BaseRouter {
         if (token == _instructions.stakingToken) {
             bool success = IHoma(HOMA).mint(token.balanceOf(address(this)));
             require(success, "HomaRouter: mint failed");
-            AccountHelper.transferToken(_instructions.liquidToken, _instructions.recipient, _instructions.liquidToken.balanceOf(address(this)));
+            AccountHelper.transferToken(
+                _instructions.liquidToken, _instructions.recipient, _instructions.liquidToken.balanceOf(address(this))
+            );
         } else {
             // received token is not staking token, transfer it to recipient to avoid it stuck in this contract
             AccountHelper.transferToken(token, _instructions.recipient, token.balanceOf(address(this)));

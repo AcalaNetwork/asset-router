@@ -14,13 +14,15 @@ library AccountHelper {
      * @return The Ethereum address converted from the bytes32 value. Returns address(0) if the conversion fails.
      */
     function toEvmAddress(bytes32 addr) public pure returns (address) {
-        bytes32 prefix = bytes32(uint256(0x65766d3a00000000000000000000000000000000000000000000000000000000));
+        // starts with `evm:`
+        bytes32 prefix = hex"65766d3a00000000000000000000000000000000000000000000000000000000";
         bool checkPrefix = addr & prefix == prefix;
         if (!checkPrefix) {
             return address(0);
         }
 
-        bytes32 suffix = bytes32(uint256(0x000000000000000000000000000000000000000000000000ffffffffffffffff));
+        // ends with 8 bytes of zeros
+        bytes32 suffix = hex"000000000000000000000000000000000000000000000000ffffffffffffffff";
         bool checkSuffix = addr & suffix == 0;
         if (!checkSuffix) {
             return address(0);
