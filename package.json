@@ -17,8 +17,8 @@
     "prepublish": "yarn clean && yarn build:dist"
   },
   "dependencies": {
-    "@acala-network/contracts": "^4.3.9",
-    "@acala-network/eth-providers": "^2.6.2",
+    "@acala-network/contracts": "^4.5.0",
+    "@acala-network/eth-providers": "^2.7.13",
     "@certusone/wormhole-sdk": "^0.9.11",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.0",

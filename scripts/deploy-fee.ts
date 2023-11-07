@@ -1,19 +1,9 @@
 import { ethers, run, network } from 'hardhat';
-import {  ROUTER_TOKEN_INFO, CHAIN } from './consts';
+import {  ROUTER_TOKEN_INFO } from './consts';
 import { parseUnits } from 'ethers/lib/utils';
 import { FeeStruct } from '../typechain-types/src/FeeRegistry';
 
 async function main() {
-  // const tokenAddr = ADDRESSES[network.name].usdcAddr;
-  // const Token = await ethers.getContractFactory('MockToken');
-  // const token = Token.attach(tokenAddr);
-  // const decimals = await token.decimals();
-
-  // const feeConfig = [{
-  //   token: tokenAddr,
-  //   amount: parseUnits('0.0002', decimals),
-  // }];
-
   const isAcala = network.name === 'acala';
   const feeConfig = Object.entries(ROUTER_TOKEN_INFO)
     .filter(([, info]) => isAcala ? !!info.acalaAddr : !!info.karuraAddr)
@@ -33,10 +23,12 @@ async function main() {
 
   console.log(`feeRegistry address: ${fee.address}`);
 
-  await run('verify:verify', {
-    address: fee.address,
-    constructorArguments: [feeConfig],
-  });
+  if (process.env.VERIFY) {
+    await run('verify:verify', {
+      address: fee.address,
+      constructorArguments: [feeConfig],
+    });
+  }
 }
 
 main().catch((error) => {
@@ -64,7 +56,7 @@ karura: 0xF25176942A23C703aB7b79f50fF7eaBb6eee8d82
   '0xFdb9E75eC0B329B23B2C8cb165F718A5688E66dC': 5400000000000000000n
 }
 
-acala: 0x3638ebA6948784cefF8A2dE3534Cd4923FAd6f0a
+acala: 0x9933F9dfDEf1A5D51A1b0A210A591FEfCEBC6163
 {
   '0xD53E4bA478cCA5080C47435769ff82F41e5e4cd0': 36000000000000000n,
   '0x19EbA3efA7D0E02956678C5f3c63c46Beda2D7D8': 50000000000000000n,
@@ -80,6 +72,11 @@ acala: 0x3638ebA6948784cefF8A2dE3534Cd4923FAd6f0a
   '0x07DF96D1341A7d16Ba1AD431E2c847d978BC2bCe': 40000n,
   '0x492f4E41BD378D6dbd92Ab645AC4020B01784Db3': 40000n,
   '0x54A37A01cD75B616D63E0ab665bFfdb0143c52AE': 40000000000000000n,
-  '0xa72206Fdf839c785B3073870013f2fd57ba10B63': 5400000000000000000n
+  '0xa72206Fdf839c785B3073870013f2fd57ba10B63': 5400000000000000000n,
+  '0x0000000000000000000100000000000000000000': 860000000000n,
+  '0x0000000000000000000100000000000000000001': 100000000000n,
+  '0x0000000000000000000100000000000000000002': 100000000n,
+  '0x0000000000000000000100000000000000000003': 800000000n,
+  '0x0000000000000000000300000000000000000000': 100000000n
 }
                                                          --------------- */

@@ -95,3 +95,21 @@ router fee: 0.0002
 { deployerBal: 1.827, relayerBal: 0.0016, routerBal: 0, userBal: 0 }
     ✔ after router xcm to user (49972ms)
 ```
+
+## homa router
+- start a local acala fork
+```
+npx @acala-network/chopsticks@latest -c chopsticks/configs/acala.yml
+```
+
+- start a local rpc adapter
+```
+npx @acala-network/eth-rpc-adapter@latest -e ws://localhost:8000
+```
+
+- upgrade predeployed contracts with sudo (temp)
+
+- run tests
+```
+yarn hardhat test test/homa-router.test.ts --network acalaFork
+```

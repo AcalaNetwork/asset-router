@@ -28,6 +28,11 @@ export const enum TOKEN {
   DAI = 'dai',
   CSM = 'csm',
   CRU = 'cru',
+  ACA = 'aca',
+  ASEED = 'aseed',
+  DOT = 'dot',
+  LDOT = 'ldot',
+  TDOT = 'tdot',
 }
 
 export type CHAIN_NAME = keyof typeof CHAIN;
@@ -56,8 +61,9 @@ export const ADDRESSES = {
   [CHAIN.ACALA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.acala.token_bridge,
     factoryAddr: '0x4D72F3b3e6D2AFeD99923137a04b9Cd9Cd2F21C5',
-    feeAddr: '0x3638ebA6948784cefF8A2dE3534Cd4923FAd6f0a',
+    feeAddr: '0x9933F9dfDEf1A5D51A1b0A210A591FEfCEBC6163',
     usdcAddr: '0x07DF96D1341A7d16Ba1AD431E2c847d978BC2bCe',
+    homaFactoryAddr: '0x3d3593927228553b349767ABa68d4fb1514678CB',    // on chopsticks. TODO: update after deploying to mainnet
   },
 } as const;
 
@@ -189,6 +195,46 @@ export const ROUTER_TOKEN_INFO = {
     acalaAddr: '0xa72206Fdf839c785B3073870013f2fd57ba10B63',
     decimals: 18,
     fee: 5.4,
+  },
+  [TOKEN.ACA]: {
+    originChain: CHAIN.ACALA,
+    originAddr: '0x0000000000000000000100000000000000000000',
+    karuraAddr: null,
+    acalaAddr: '0x0000000000000000000100000000000000000000',
+    decimals: 12,
+    fee: 0.86,
+  },
+  [TOKEN.ASEED]: {
+    originChain: CHAIN.ACALA,
+    originAddr: '0x0000000000000000000100000000000000000001',
+    karuraAddr: null,
+    acalaAddr: '0x0000000000000000000100000000000000000001',
+    decimals: 12,
+    fee: 0.1,
+  },
+  [TOKEN.DOT]: {
+    originChain: CHAIN.ACALA,
+    originAddr: '0x0000000000000000000100000000000000000002',
+    karuraAddr: null,
+    acalaAddr: '0x0000000000000000000100000000000000000002',
+    decimals: 10,
+    fee: 0.01,
+  },
+  [TOKEN.LDOT]: {
+    originChain: CHAIN.ACALA,
+    originAddr: '0x0000000000000000000100000000000000000003',
+    karuraAddr: null,
+    acalaAddr: '0x0000000000000000000100000000000000000003',
+    decimals: 10,
+    fee: 0.08,
+  },
+  [TOKEN.TDOT]: {
+    originChain: CHAIN.ACALA,
+    originAddr: '0x0000000000000000000300000000000000000000',
+    karuraAddr: null,
+    acalaAddr: '0x0000000000000000000300000000000000000000',
+    decimals: 10,
+    fee: 0.01,
   },
 } as const;
 

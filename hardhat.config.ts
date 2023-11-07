@@ -5,33 +5,39 @@ import '@nomicfoundation/hardhat-foundry';
 
 dotenv.config();
 
+const TEST_ACCOUNTS = {
+  mnemonic: 'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm',
+  path: 'm/44\'/60\'/0\'/0',
+};
+
+const PROD_ACCOUNTS = process.env.KEY ? [process.env.KEY] : [];
+
 const config: HardhatUserConfig = {
   solidity: '0.8.18',
   networks: {
     mandala: {
       url: 'http://127.0.0.1:8545',
-      accounts: {
-        mnemonic: 'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm',
-        path: 'm/44\'/60\'/0\'/0',
-      },
+      accounts: TEST_ACCOUNTS,
       chainId: 595,
     },
     karuraTestnet: {
       url: 'https://eth-rpc-karura-testnet.aca-staging.network',
-      accounts: {
-        mnemonic: 'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm',
-        path: 'm/44\'/60\'/0\'/0',
-      },
+      accounts: TEST_ACCOUNTS,
       chainId: 596,
+    },
+    acalaFork: {
+      url: 'http://127.0.0.1:8545',
+      accounts: TEST_ACCOUNTS,
+      chainId: 787,
     },
     karura: {
       url: 'https://eth-rpc-karura.aca-api.network',
-      accounts: process.env.KEY ? [process.env.KEY] : [],
+      accounts: PROD_ACCOUNTS,
       chainId: 686,
     },
     acala: {
       url: 'https://eth-rpc-acala.aca-api.network',
-      accounts: process.env.KEY ? [process.env.KEY] : [],
+      accounts: PROD_ACCOUNTS,
       chainId: 787,
     },
   },
