@@ -1,19 +1,12 @@
 module.exports = {
-  env: {
-    browser: false,
-    es2021: true,
-  },
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', 'import', 'sort-imports-es6-autofix'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 13,
-    sourceType: 'module',
-  },
-  plugins: ['@typescript-eslint'],
   rules: {
     indent: [2, 2, { SwitchCase: 1 }],
     quotes: [2, 'single'],
@@ -40,8 +33,24 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 0, // type inference on return type is useful
     '@typescript-eslint/no-parameter-properties': 0,
     '@typescript-eslint/typedef': 0,
-    '@typescript-eslint/no-non-null-assertion': 0,  // can assert not null
     'no-unused-expressions': 0, // short ciucuit if
     'max-lines': 0,
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'sort-imports-es6-autofix/sort-imports-es6': 'warn',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    'no-useless-escape': 'off',
+    '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
+    'import/no-named-as-default-member': 'off',
+    'import/no-named-as-default': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
   },
 };
