@@ -70,7 +70,7 @@ describe('Homa Router', () => {
   before('setup', async () => {
     ([user, relayer] = await ethers.getSigners());
 
-    const evmAddr = EVMAccounts__factory.connect(EVM_ACCOUNTS, user);
+    const evmAccounts = EVMAccounts__factory.connect(EVM_ACCOUNTS, user);
     const Token = await ethers.getContractFactory('MockToken');
     const Fee = await ethers.getContractFactory('FeeRegistry');
     const Factory = await ethers.getContractFactory('HomaFactory', {
@@ -86,7 +86,7 @@ describe('Homa Router', () => {
     decimals = await dot.decimals();
     routingFee = await fee.getFee(dot.address);
     stakeAmount = parseUnits('101', decimals);
-    userAddr32 = await evmAddr.getAccountId(user.address);
+    userAddr32 = await evmAccounts.getAccountId(user.address);
 
     // user should be bound to alice
     const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
