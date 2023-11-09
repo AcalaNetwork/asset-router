@@ -176,6 +176,7 @@ describe('Homa Router', () => {
     });
   });
 
+  // TODO: can do some refactor since this is very similar to previous test
   describe('route to native address', () => {
     it('predict router address', async () => {
       routerAddr = await factory.callStatic.deployHomaRouter(fee.address, userAddr32);
@@ -235,5 +236,4 @@ describe('Homa Router', () => {
       expect(routerCode).to.eq('0x');
     });
   });
-
 });
