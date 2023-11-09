@@ -1,5 +1,6 @@
 
 import { BigNumber } from 'ethers';
+import { decodeAddress } from '@polkadot/util-crypto';
 import { ethers, network } from 'hardhat';
 import { formatUnits, parseEther } from 'ethers/lib/utils';
 
@@ -36,7 +37,9 @@ export const loadSetups = async () => {
 
 // convert evm addr to bytes32 with prefix of `evm:` and suffix of 8 bytes of zeros
 const EVM_PREFIX = '65766d3a';    // evm:
-export const fromEvmAddr = (addr: string) => `0x${EVM_PREFIX}${addr.slice(2)}${'0'.repeat(16)}`;
+export const evmToAddr32 = (addr: string) => `0x${EVM_PREFIX}${addr.slice(2)}${'0'.repeat(16)}`;
+
+export const nativeToAddr32 = (addr: string) => '0x' + Buffer.from(decodeAddress(addr)).toString('hex');
 
 export type Resolved<T> = T extends Promise<infer U> ? U : T;
 

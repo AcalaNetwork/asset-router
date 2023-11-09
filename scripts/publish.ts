@@ -1,6 +1,7 @@
-import { ethers } from 'hardhat';
 import { EVM as EVM_ADDR } from '@acala-network/contracts/utils/Predeploy';
 import { EVM__factory } from '@acala-network/contracts/typechain';
+import { ethers } from 'hardhat';
+
 import { ADDRESSES } from './consts';
 
 const targetContract = ADDRESSES.ACALA.homaFactoryAddr;
