@@ -5,23 +5,13 @@ import { IHoma__factory } from '@acala-network/contracts/typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ethers } from 'hardhat';
 import { expect } from 'chai';
-import { formatEther, formatUnits, parseEther, parseUnits } from 'ethers/lib/utils';
+import { formatEther, parseEther, parseUnits } from 'ethers/lib/utils';
 
 import { ADDRESSES } from '../scripts/consts';
 import { FeeRegistry, HomaFactory, MockToken } from '../typechain-types';
+import { ONE_ACA, Resolved, almostEq, fromEvmAddr, toHuman } from '../scripts/utils';
 
-type Resolved<T> = T extends Promise<infer U> ? U : T;
-
-const toHuman = (amount: BigNumber, decimals: number) => Number(formatUnits(amount, decimals));
-
-const almostEq = (a: BigNumber, b: BigNumber) => {
-  const diff = a.sub(b).abs();
-  return a.div(diff).gt(100);   // within 1% diff
-};
-
-const ONE_ACA = parseEther('1');
-
-const { homaFactoryAddr, feeAddr } = ADDRESSES.ACALA;
+const { homaFactoryAddr, feeAddr, accountHelper } = ADDRESSES.ACALA;
 
 describe('Homa Router', () => {
   // fixed
@@ -81,7 +71,11 @@ describe('Homa Router', () => {
 
     const Token = await ethers.getContractFactory('MockToken');
     const Fee = await ethers.getContractFactory('FeeRegistry');
-    const Factory = await ethers.getContractFactory('HomaFactory');
+    const Factory = await ethers.getContractFactory('HomaFactory', {
+      libraries: {
+        AccountHelper: accountHelper,
+      },
+    });
 
     dot = Token.attach(DOT);
     ldot = Token.attach(LDOT);
@@ -101,7 +95,7 @@ describe('Homa Router', () => {
   });
 
   it('predict router address', async () => {
-    routerAddr = await factory.callStatic.deployHomaRouter(fee.address, user.address);
+    routerAddr = await factory.callStatic.deployHomaRouter(fee.address, fromEvmAddr(user.address));
     console.log({ predictedRouterAddr: routerAddr });
   });
 
@@ -143,7 +137,7 @@ describe('Homa Router', () => {
     console.log('\n-------------------- after router routed and staked --------------------');
     const deployAndRoute = await factory.connect(relayer).deployHomaRouterAndRoute(
       fee.address,
-      user.address,
+      fromEvmAddr(user.address),
       DOT,
     );
     await deployAndRoute.wait();
