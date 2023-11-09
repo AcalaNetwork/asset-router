@@ -7,7 +7,7 @@ async function main() {
 
   if (process.env.VERIFY) {
     await run('verify:verify', {
-      address: '0x0252340cC347718f9169d329CEFf8B15A92badf8',
+      address: ac.address,
       constructorArguments: [],
     });
   }
