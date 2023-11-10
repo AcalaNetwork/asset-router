@@ -63,7 +63,8 @@ export const ADDRESSES = {
     factoryAddr: '0x4D72F3b3e6D2AFeD99923137a04b9Cd9Cd2F21C5',
     feeAddr: '0x9933F9dfDEf1A5D51A1b0A210A591FEfCEBC6163',
     usdcAddr: '0x07DF96D1341A7d16Ba1AD431E2c847d978BC2bCe',
-    homaFactoryAddr: '0x3d3593927228553b349767ABa68d4fb1514678CB',    // on chopsticks. TODO: update after deploying to mainnet
+    homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',
+    accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',
   },
 } as const;
 
