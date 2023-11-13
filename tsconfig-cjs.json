@@ -7,6 +7,7 @@
   },
   "include": [
     "./typechain-types",
-    "./scripts/consts.ts"
+    "./scripts/consts.ts",
+    "./scripts/utils.ts",
   ]
 }
