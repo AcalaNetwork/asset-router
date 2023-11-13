@@ -1,15 +1,16 @@
+import { Bridge__factory } from '@certusone/wormhole-sdk/lib/cjs/ethers-contracts';
+import { CONTRACTS, ChainName, tryNativeToHexString } from '@certusone/wormhole-sdk';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import { expect } from 'chai';
+
 import {
   CHAIN,
   CHAIN_NAME,
   CHAIN_NAME_TO_WORMHOLE_CHAIN_ID,
-  ROUTER_TOKEN_INFO,
   ROUTER_CHAIN,
+  ROUTER_TOKEN_INFO,
 } from '../scripts/consts';
 import { MockToken__factory } from '../dist/typechain-types';
-import { JsonRpcProvider } from '@ethersproject/providers';
-import { Bridge__factory } from '@certusone/wormhole-sdk/lib/cjs/ethers-contracts';
-import { CONTRACTS, ChainName, tryNativeToHexString } from '@certusone/wormhole-sdk';
 
 const getProvider = (networkName: string) => {
   const ethRpc = ({
