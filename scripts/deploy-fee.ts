@@ -1,7 +1,8 @@
-import { ethers, run, network } from 'hardhat';
-import { ROUTER_TOKEN_INFO } from './consts';
+import { ethers, network, run } from 'hardhat';
 import { parseUnits } from 'ethers/lib/utils';
+
 import { FeeStruct } from '../typechain-types/src/FeeRegistry';
+import { ROUTER_TOKEN_INFO } from './consts';
 
 async function main() {
   const isAcala = network.name === 'acala';

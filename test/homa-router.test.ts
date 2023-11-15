@@ -9,7 +9,7 @@ import { formatEther, parseEther, parseUnits } from 'ethers/lib/utils';
 
 import { ADDRESSES } from '../scripts/consts';
 import { FeeRegistry, HomaFactory, MockToken } from '../typechain-types';
-import { ONE_ACA, Resolved, almostEq, evmToAddr32, nativeToAddr32, toHuman } from '../scripts/utils';
+import { ONE_ACA, almostEq, evmToAddr32, nativeToAddr32, toHuman } from '../scripts/utils';
 
 const { homaFactoryAddr, feeAddr, accountHelperAddr } = ADDRESSES.ACALA;
 
@@ -28,8 +28,8 @@ describe('Homa Router', () => {
 
   // dynamic
   let routerAddr: string;
-  let bal0: Resolved<ReturnType<typeof fetchTokenBalances>>;
-  let bal1: Resolved<ReturnType<typeof fetchTokenBalances>>;
+  let bal0: Awaited<ReturnType<typeof fetchTokenBalances>>;
+  let bal1: Awaited<ReturnType<typeof fetchTokenBalances>>;
 
   const fetchTokenBalances = async () => {
     const [

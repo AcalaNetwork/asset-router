@@ -1,15 +1,13 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { Xtokens__factory } from '@acala-network/contracts/typechain';
-import { XTOKENS } from '@acala-network/contracts/utils/Predeploy';
 import { BigNumber, Contract } from 'ethers';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { XTOKENS } from '@acala-network/contracts/utils/Predeploy';
+import { Xtokens__factory } from '@acala-network/contracts/typechain';
+import { ethers } from 'hardhat';
+import { expect } from 'chai';
 
-import { FeeRegistry, MockToken } from '../typechain-types';
-import { Factory, XcmInstructionsStruct } from '../typechain-types/src/Factory';
 import { ADDRESSES } from '../scripts/consts';
-
-type Resolved<T> = T extends Promise<infer U> ? U : T;
+import { Factory, XcmInstructionsStruct } from '../typechain-types/src/Factory';
+import { FeeRegistry, MockToken } from '../typechain-types';
 
 const {
   feeAddr,
@@ -30,9 +28,9 @@ describe('XcmRouter', () => {
 
   // dynamic
   let routerAddr: string;
-  let bal0: Resolved<ReturnType<typeof fetchTokenBalances>>;
-  let bal1: Resolved<ReturnType<typeof fetchTokenBalances>>;
-  let bal2: Resolved<ReturnType<typeof fetchTokenBalances>>;
+  let bal0: Awaited<ReturnType<typeof fetchTokenBalances>>;
+  let bal1: Awaited<ReturnType<typeof fetchTokenBalances>>;
+  let bal2: Awaited<ReturnType<typeof fetchTokenBalances>>;
   let xcmInstruction: XcmInstructionsStruct;
 
   const fetchTokenBalances = async () => {
