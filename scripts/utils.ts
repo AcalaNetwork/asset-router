@@ -3,8 +3,6 @@ import { BigNumber } from 'ethers';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { formatUnits, parseEther } from 'ethers/lib/utils';
 
-export type Resolved<T> = T extends Promise<infer U> ? U : T;
-
 // convert evm addr to bytes32 with prefix of `evm:` and suffix of 8 bytes of zeros
 const EVM_PREFIX = '65766d3a';    // evm:
 export const evmToAddr32 = (addr: string) => `0x${EVM_PREFIX}${addr.slice(2)}${'0'.repeat(16)}`;

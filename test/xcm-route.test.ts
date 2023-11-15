@@ -9,8 +9,6 @@ import { ADDRESSES } from '../scripts/consts';
 import { Factory, XcmInstructionsStruct } from '../typechain-types/src/Factory';
 import { FeeRegistry, MockToken } from '../typechain-types';
 
-type Resolved<T> = T extends Promise<infer U> ? U : T;
-
 const {
   feeAddr,
   usdcAddr,
@@ -30,9 +28,9 @@ describe('XcmRouter', () => {
 
   // dynamic
   let routerAddr: string;
-  let bal0: Resolved<ReturnType<typeof fetchTokenBalances>>;
-  let bal1: Resolved<ReturnType<typeof fetchTokenBalances>>;
-  let bal2: Resolved<ReturnType<typeof fetchTokenBalances>>;
+  let bal0: Awaited<ReturnType<typeof fetchTokenBalances>>;
+  let bal1: Awaited<ReturnType<typeof fetchTokenBalances>>;
+  let bal2: Awaited<ReturnType<typeof fetchTokenBalances>>;
   let xcmInstruction: XcmInstructionsStruct;
 
   const fetchTokenBalances = async () => {
