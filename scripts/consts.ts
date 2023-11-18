@@ -49,8 +49,10 @@ export const ADDRESSES = {
   [CHAIN.ACALA_TESTNET]: {
     tokenBridgeAddr: CONTRACTS.TESTNET.acala.token_bridge,
     factoryAddr: '',
-    feeAddr: '',
+    feeAddr: '0x9933F9dfDEf1A5D51A1b0A210A591FEfCEBC6163',            // acala fork
     usdcAddr: '0x7E0CCD4209Ef7039901512fF9f6a01d0de0691e2',
+    homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',    // acala fork
+    accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',  // acala fork
   },
   [CHAIN.KARURA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
