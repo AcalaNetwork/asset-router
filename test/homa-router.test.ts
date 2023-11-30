@@ -116,124 +116,63 @@ describe('Homa Router', () => {
     }
   });
 
-  describe('route to evm address', () => {
-    it('predict router address', async () => {
-      routerAddr = await factory.callStatic.deployHomaRouter(fee.address, evmToAddr32(user.address));
-      console.log({ predictedRouterAddr: routerAddr });
-    });
+  const testHomaRouter = async (addr32: string) => {
+    routerAddr = await factory.callStatic.deployHomaRouter(fee.address, addr32);
+    console.log({ predictedRouterAddr: routerAddr });
 
-    it('init state', async () => {
-      console.log('\n-------------------- init state --------------------');
-      bal0 = await fetchTokenBalances();
-      expect(bal0.userBalDot).to.gte(stakeAmount);
+    console.log('\n-------------------- init state --------------------');
+    bal0 = await fetchTokenBalances();
+    expect(bal0.userBalDot).to.gte(stakeAmount);
 
-      // router shouldn't exist
-      const routerCode = await relayer.provider!.getCode(routerAddr);
-      expect(routerCode).to.eq('0x');
-    });
+    // router shouldn't exist
+    let routerCode = await relayer.provider!.getCode(routerAddr);
+    expect(routerCode).to.eq('0x');
 
-    it('after user deposited to router', async () => {
-      console.log('\n-------------------- after user deposited to router --------------------');
+    console.log('\n-------------------- after user deposited to router --------------------');
 
-      await (await dot.connect(user).transfer(
-        routerAddr,
-        stakeAmount,
-      )).wait();
+    await (await dot.connect(user).transfer(
+      routerAddr,
+      stakeAmount,
+    )).wait();
 
-      await fetchTokenBalances();
-    });
+    await fetchTokenBalances();
 
-    it('after router routed and staked', async () => {
-      console.log('\n-------------------- after router routed and staked --------------------');
-      const deployAndRoute = await factory.connect(relayer).deployHomaRouterAndRoute(
-        fee.address,
-        evmToAddr32(user.address),
-        DOT,
-      );
-      await deployAndRoute.wait();
+    console.log('\n-------------------- after router routed and staked --------------------');
+    const deployAndRoute = await factory.connect(relayer).deployHomaRouterAndRoute(
+      fee.address,
+      addr32,
+      DOT,
+    );
+    await deployAndRoute.wait();
 
-      bal1 = await fetchTokenBalances();
+    bal1 = await fetchTokenBalances();
 
-      // router should have no remaining balance
-      expect(bal1.routerBalDot).to.eq(0);
-      expect(bal1.routerBalLdot).to.eq(0);
+    // router should have no remaining balance
+    expect(bal1.routerBalDot).to.eq(0);
+    expect(bal1.routerBalLdot).to.eq(0);
 
-      // user should receive LDOT
-      const homa = IHoma__factory.connect(HOMA, user);
-      const exchangeRate = parseEther((1 / Number(formatEther(await homa.getExchangeRate()))).toString());    // 10{18} DOT => ? LDOT
-      const expectedLdot = stakeAmount.sub(routingFee).mul(exchangeRate).div(ONE_ACA);
-      const ldotReceived = bal1.userBalLdot.sub(bal0.userBalLdot);
+    // user should receive LDOT
+    const homa = IHoma__factory.connect(HOMA, user);
+    const exchangeRate = parseEther((1 / Number(formatEther(await homa.getExchangeRate()))).toString());    // 10{18} DOT => ? LDOT
+    const expectedLdot = stakeAmount.sub(routingFee).mul(exchangeRate).div(ONE_ACA);
+    const ldotReceived = bal1.userBalLdot.sub(bal0.userBalLdot);
 
-      expect(almostEq(expectedLdot, ldotReceived)).to.be.true;
-      expect(bal0.userBalDot.sub(bal1.userBalDot)).to.eq(stakeAmount);
+    expect(almostEq(expectedLdot, ldotReceived)).to.be.true;
+    expect(bal0.userBalDot.sub(bal1.userBalDot)).to.eq(stakeAmount);
 
-      // relayer should receive fee
-      expect(bal1.relayerBalDot.sub(bal0.relayerBalDot)).to.eq(routingFee);
+    // relayer should receive fee
+    expect(bal1.relayerBalDot.sub(bal0.relayerBalDot)).to.eq(routingFee);
 
-      // router should be destroyed
-      const routerCode = await relayer.provider!.getCode(routerAddr);
-      expect(routerCode).to.eq('0x');
-    });
+    // router should be destroyed
+    routerCode = await relayer.provider!.getCode(routerAddr);
+    expect(routerCode).to.eq('0x');
+  };
+
+  it('route to evm address', async () => {
+    await testHomaRouter(evmToAddr32(user.address));
   });
 
-  // TODO: can do some refactor since this is very similar to previous test
-  describe('route to native address', () => {
-    it('predict router address', async () => {
-      routerAddr = await factory.callStatic.deployHomaRouter(fee.address, userAddr32);
-      console.log({ predictedRouterAddr: routerAddr });
-    });
-
-    it('init state', async () => {
-      console.log('\n-------------------- init state --------------------');
-      bal0 = await fetchTokenBalances();
-      expect(bal0.userBalDot).to.gte(stakeAmount);
-
-      // router shouldn't exist
-      const routerCode = await relayer.provider!.getCode(routerAddr);
-      expect(routerCode).to.eq('0x');
-    });
-
-    it('after user deposited to router', async () => {
-      console.log('\n-------------------- after user deposited to router --------------------');
-
-      await (await dot.connect(user).transfer(
-        routerAddr,
-        stakeAmount,
-      )).wait();
-
-      await fetchTokenBalances();
-    });
-
-    it('after router routed and staked', async () => {
-      console.log('\n-------------------- after router routed and staked --------------------');
-      const deployAndRoute = await factory.connect(relayer).deployHomaRouterAndRoute(
-        fee.address,
-        userAddr32,
-        DOT,
-      );
-      await deployAndRoute.wait();
-
-      bal1 = await fetchTokenBalances();
-
-      // router should have no remaining balance
-      expect(bal1.routerBalDot).to.eq(0);
-      expect(bal1.routerBalLdot).to.eq(0);
-
-      // user should receive LDOT
-      const homa = IHoma__factory.connect(HOMA, user);
-      const exchangeRate = parseEther((1 / Number(formatEther(await homa.getExchangeRate()))).toString());    // 10{18} DOT => ? LDOT
-      const expectedLdot = stakeAmount.sub(routingFee).mul(exchangeRate).div(ONE_ACA);
-      const ldotReceived = bal1.userBalLdot.sub(bal0.userBalLdot);
-
-      expect(almostEq(expectedLdot, ldotReceived)).to.be.true;
-      expect(bal0.userBalDot.sub(bal1.userBalDot)).to.eq(stakeAmount);
-
-      // relayer should receive fee
-      expect(bal1.relayerBalDot.sub(bal0.relayerBalDot)).to.eq(routingFee);
-
-      // router should be destroyed
-      const routerCode = await relayer.provider!.getCode(routerAddr);
-      expect(routerCode).to.eq('0x');
-    });
+  it('route to substrate address', async () => {
+    await testHomaRouter(userAddr32);
   });
 });
