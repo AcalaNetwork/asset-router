@@ -231,7 +231,7 @@ describe('Homa Router', () => {
 
       const router = HomaRouter__factory.connect(routerAddr, relayer);
 
-      await expect(router.rescure(token.address)).to.be.revertedWith('HomaRouter: not recipient');
+      await expect(router.rescure(token.address)).to.be.revertedWith('HomaRouter: not recipient');    // relayer is not the recipient
 
       await (await router.connect(user).rescure(token.address)).wait();   // user is the recipient
     } else {
@@ -249,6 +249,8 @@ describe('Homa Router', () => {
       tokenBal2: toHuman(tokenBal2, tokenDecimals),
       tokenBalRouter: toHuman(tokenBalRouter, tokenDecimals),
     });
+
+    // user should receive full token refund
     expect(tokenBal0).to.eq(tokenBal2);
 
     if (!needRescue) {
