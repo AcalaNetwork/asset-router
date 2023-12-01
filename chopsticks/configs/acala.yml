@@ -15,11 +15,6 @@ import-storage:
         - providers: 1
           data:
             free: 1000000000000000
-      -
-        -
-          - 23AdbsfRspW5m6ZXq6SPXQoUpYsVu8Zwa6XRzR3WkbX14zgB
-        - data:
-            free: 1000000000000000
   Tokens:
     Accounts:
       -
