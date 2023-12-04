@@ -4,3 +4,4 @@ solmate/=lib/solmate/src/
 @openzeppelin/=lib/openzeppelin-contracts/
 wormhole/=lib/wormhole/ethereum/contracts/
 @acala-network/=lib/predeploy-contracts/
+euphrates/=lib/Euphrates/src/
