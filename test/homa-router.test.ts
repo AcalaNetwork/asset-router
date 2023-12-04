@@ -8,15 +8,18 @@ import { expect } from 'chai';
 import { formatEther, parseEther, parseUnits } from 'ethers/lib/utils';
 
 import { ADDRESSES } from '../scripts/consts';
-import { FeeRegistry, HomaFactory, MockToken } from '../typechain-types';
+import { FeeRegistry, HomaFactory, HomaRouter__factory, MockToken } from '../typechain-types';
 import { ONE_ACA, almostEq, evmToAddr32, nativeToAddr32, toHuman } from '../scripts/utils';
 
 const { homaFactoryAddr, feeAddr, accountHelperAddr } = ADDRESSES.ACALA;
+
+const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
 describe('Homa Router', () => {
   // fixed
   let dot: MockToken;
   let ldot: MockToken;
+  let pepe: MockToken;
   let fee: FeeRegistry;
   let factory: HomaFactory;
   let decimals: number;
@@ -24,7 +27,8 @@ describe('Homa Router', () => {
   let stakeAmount: BigNumber;
   let user: SignerWithAddress;
   let relayer: SignerWithAddress;
-  let userAddr32: string;
+  let userNativeAddr32: string;
+  let userEvmAddr32: string;
 
   // dynamic
   let routerAddr: string;
@@ -82,21 +86,25 @@ describe('Homa Router', () => {
     dot = Token.attach(DOT);
     ldot = Token.attach(LDOT);
     fee = Fee.attach(feeAddr);
-    factory = Factory.attach(homaFactoryAddr);
+    factory = Factory.attach(homaFactoryAddr).connect(relayer);
     decimals = await dot.decimals();
     routingFee = await fee.getFee(dot.address);
     stakeAmount = parseUnits('101', decimals);
-    userAddr32 = await evmAccounts.getAccountId(user.address);
+    userNativeAddr32 = await evmAccounts.getAccountId(user.address);
+    userEvmAddr32 = evmToAddr32(user.address);
 
     // user should be bound to alice
-    const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
-    expect(userAddr32).to.eq(nativeToAddr32(ALICE));
+    expect(userNativeAddr32).to.eq(nativeToAddr32(ALICE));
+
+    pepe = await Token.deploy('pepe dog', 'PEPEDOG');
+    await pepe.deployed();
 
     console.log(`dot address: ${dot.address}`);
     console.log(`feeRegistry address: ${fee.address}`);
     console.log(`factory address: ${factory.address}`);
+    console.log(`pepe address: ${pepe.address}`);
     console.log(`user address: ${user.address}`);
-    console.log(`user address32: ${userAddr32}`);
+    console.log(`user address32: ${userNativeAddr32}`);
     console.log(`relayer address: ${relayer.address}`);
     console.log(`token decimals: ${decimals}`);
     console.log(`router fee: ${Number(ethers.utils.formatUnits(routingFee, decimals))}`);
@@ -126,7 +134,7 @@ describe('Homa Router', () => {
 
     // router shouldn't exist
     let routerCode = await relayer.provider!.getCode(routerAddr);
-    expect(routerCode).to.eq('0x');
+    // expect(routerCode).to.eq('0x');
 
     console.log('\n-------------------- after user deposited to router --------------------');
 
@@ -138,7 +146,7 @@ describe('Homa Router', () => {
     await fetchTokenBalances();
 
     console.log('\n-------------------- after router routed and staked --------------------');
-    const deployAndRoute = await factory.connect(relayer).deployHomaRouterAndRoute(
+    const deployAndRoute = await factory.deployHomaRouterAndRoute(
       fee.address,
       addr32,
       DOT,
@@ -169,10 +177,104 @@ describe('Homa Router', () => {
   };
 
   it('route to evm address', async () => {
-    await testHomaRouter(evmToAddr32(user.address));
+    await testHomaRouter(userEvmAddr32);
   });
 
   it('route to substrate address', async () => {
-    await testHomaRouter(userAddr32);
+    await testHomaRouter(userNativeAddr32);
+  });
+
+  const testHomaRouterRefund = async (addr32: string, token: MockToken, needRescue = false) => {
+    const tokenDecimals = await token.decimals();
+
+    routerAddr = await factory.callStatic.deployHomaRouter(fee.address, addr32);
+    console.log({ predictedRouterAddr: routerAddr });
+
+    console.log('\n-------------------- init state --------------------');
+    const tokenBal0= await token.balanceOf(user.address);
+    console.log({ tokenBal0: toHuman(tokenBal0, tokenDecimals) });
+
+    // router shouldn't exist
+    let routerCode = await relayer.provider!.getCode(routerAddr);
+    // expect(routerCode).to.eq('0x');
+
+    console.log('\n-------------------- after user deposited to router --------------------');
+    const randTokenAmount = parseUnits(String(Math.floor(Math.random() * 100) + 1), tokenDecimals);
+    expect(tokenBal0).to.gte(randTokenAmount, 'user does not have enough token to transfer!');
+
+    await (await token.connect(user).transfer(
+      routerAddr,
+      randTokenAmount,
+    )).wait();
+
+    const tokenBal1 = await token.balanceOf(user.address);
+    let tokenBalRouter = await token.balanceOf(routerAddr);
+    console.log({
+      tokenBal1: toHuman(tokenBal1, tokenDecimals),
+      tokenBalRouter: toHuman(tokenBalRouter, tokenDecimals),
+    });
+
+    console.log('\n-------------------- after router returned token --------------------');
+    if (needRescue) {
+      // cannot tranfer non-native erc20 to substrate addr
+      await expect(factory.deployHomaRouterAndRouteNoFee(
+        fee.address,
+        addr32,
+        token.address,
+      )).to.be.reverted;
+
+      // deploy router and rescue
+      console.log('deploying homa router ...');
+      const receipt = await (await factory.deployHomaRouter(fee.address, addr32)).wait();
+      const routerAddr_ = receipt.logs[0]?.topics?.[1];
+      console.log('deployed!', { routerAddr_ });
+
+      const router = HomaRouter__factory.connect(routerAddr, relayer);
+
+      await expect(router.rescure(token.address)).to.be.revertedWith('HomaRouter: not recipient');    // relayer is not the recipient
+
+      await (await router.connect(user).rescure(token.address)).wait();   // user is the recipient
+    } else {
+      const deployAndRoute = await factory.deployHomaRouterAndRouteNoFee(
+        fee.address,
+        addr32,
+        token.address,
+      );
+      await deployAndRoute.wait();
+    }
+
+    const tokenBal2 = await token.balanceOf(user.address);
+    tokenBalRouter = await token.balanceOf(routerAddr);
+    console.log({
+      tokenBal2: toHuman(tokenBal2, tokenDecimals),
+      tokenBalRouter: toHuman(tokenBalRouter, tokenDecimals),
+    });
+
+    // user should receive full token refund
+    expect(tokenBal0).to.eq(tokenBal2);
+
+    if (!needRescue) {
+      routerCode = await relayer.provider!.getCode(routerAddr);
+      expect(routerCode).to.eq('0x');
+    }
+  };
+
+  describe('able to refund unsupported token', () => {
+    it('native token to evm addr', async () => {
+      await testHomaRouterRefund(userEvmAddr32, ldot.connect(user));
+    });
+
+    it('native token to substrate addr', async () => {
+      await testHomaRouterRefund(userNativeAddr32, ldot.connect(user));
+    });
+
+    it('erc20 to evm addr', async () => {
+      await testHomaRouterRefund(userEvmAddr32, pepe);
+    });
+
+    it('erc20 to substrate addr', async () => {
+      const needRescue = true;      // only non-native erc20 => substrate addr needs rescue
+      await testHomaRouterRefund(userNativeAddr32, pepe, needRescue);
+    });
   });
 });

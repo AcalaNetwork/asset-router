@@ -15,17 +15,17 @@ import-storage:
         - providers: 1
           data:
             free: 1000000000000000
-      -
-        -
-          - 246gNkjCexYRsCpdjtVhz35sHjcb21jpqipzT9u4uwKV8iEE
-        - data:
-            free: 1000000000000000
   Tokens:
     Accounts:
       -
         -
           - 5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY
           - token: DOT
+        - free: 1000000000000000
+      -
+        -
+          - 5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY
+          - token: LDOT
         - free: 1000000000000000
   EvmAccounts:
     EvmAddresses:
