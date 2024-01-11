@@ -54,7 +54,7 @@ export const ADDRESSES = {
     usdcAddr: '0x7E0CCD4209Ef7039901512fF9f6a01d0de0691e2',
     homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',      // acala fork
     accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',    // acala fork
-    euphratesFactoryAddr: '0xeDd6c00564695f0651521107185a21a70F81170B', // acala fork
+    euphratesFactoryAddr: '0x2AeFc65B6E1660d2bA2796f8698120A2acB95634', // acala fork
   },
   [CHAIN.KARURA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
@@ -69,7 +69,7 @@ export const ADDRESSES = {
     usdcAddr: '0x07DF96D1341A7d16Ba1AD431E2c847d978BC2bCe',
     homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',
     accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',
-    euphratesFactoryAddr: '0xeDd6c00564695f0651521107185a21a70F81170B',
+    euphratesFactoryAddr: '0x2AeFc65B6E1660d2bA2796f8698120A2acB95634',
   },
 } as const;
 
