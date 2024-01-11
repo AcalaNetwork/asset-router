@@ -17,3 +17,6 @@
 	path = lib/predeploy-contracts
 	url = https://github.com/AcalaNetwork/predeploy-contracts
 	branch = v4.3.5
+[submodule "lib/Euphrates"]
+	path = lib/Euphrates
+	url = https://github.com/AcalaNetwork/Euphrates
