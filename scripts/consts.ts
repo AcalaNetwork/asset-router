@@ -33,6 +33,7 @@ export const enum TOKEN {
   DOT = 'dot',
   LDOT = 'ldot',
   TDOT = 'tdot',
+  LCDOT = 'lcdot',
 }
 
 export type CHAIN_NAME = keyof typeof CHAIN;
@@ -49,10 +50,11 @@ export const ADDRESSES = {
   [CHAIN.ACALA_TESTNET]: {
     tokenBridgeAddr: CONTRACTS.TESTNET.acala.token_bridge,
     factoryAddr: '',
-    feeAddr: '0x9933F9dfDEf1A5D51A1b0A210A591FEfCEBC6163',            // acala fork
+    feeAddr: '0xfFAD744806522F9F9f3bef1F09Ec5421Bfc0874e',              // acala fork
     usdcAddr: '0x7E0CCD4209Ef7039901512fF9f6a01d0de0691e2',
-    homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',    // acala fork
-    accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',  // acala fork
+    homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',      // acala fork
+    accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',    // acala fork
+    euphratesFactoryAddr: '0x2AeFc65B6E1660d2bA2796f8698120A2acB95634', // acala fork
   },
   [CHAIN.KARURA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
@@ -63,10 +65,11 @@ export const ADDRESSES = {
   [CHAIN.ACALA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.acala.token_bridge,
     factoryAddr: '0x4D72F3b3e6D2AFeD99923137a04b9Cd9Cd2F21C5',
-    feeAddr: '0x9933F9dfDEf1A5D51A1b0A210A591FEfCEBC6163',
+    feeAddr: '0x94Bb240Ff3BB9a61D8f31C39978Ce7D858b9C015',
     usdcAddr: '0x07DF96D1341A7d16Ba1AD431E2c847d978BC2bCe',
     homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',
     accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',
+    euphratesFactoryAddr: '0x2AeFc65B6E1660d2bA2796f8698120A2acB95634',
   },
 } as const;
 
@@ -236,6 +239,14 @@ export const ROUTER_TOKEN_INFO = {
     originAddr: '0x0000000000000000000300000000000000000000',
     karuraAddr: null,
     acalaAddr: '0x0000000000000000000300000000000000000000',
+    decimals: 10,
+    fee: 0.01,
+  },
+  [TOKEN.LCDOT]: {
+    originChain: CHAIN.ACALA,
+    originAddr: '0x000000000000000000040000000000000000000d',
+    karuraAddr: null,
+    acalaAddr: '0x000000000000000000040000000000000000000d',
     decimals: 10,
     fee: 0.01,
   },
