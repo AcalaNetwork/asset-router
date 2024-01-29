@@ -34,6 +34,7 @@ export const enum TOKEN {
   LDOT = 'ldot',
   TDOT = 'tdot',
   LCDOT = 'lcdot',
+  KSM = 'ksm',
 }
 
 export type CHAIN_NAME = keyof typeof CHAIN;
@@ -59,7 +60,7 @@ export const ADDRESSES = {
   [CHAIN.KARURA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
     factoryAddr: '0x38bCDdc086eC0f68390d7c6452361036469D1203',
-    feeAddr: '0xF25176942A23C703aB7b79f50fF7eaBb6eee8d82',
+    feeAddr: '0x2AeFc65B6E1660d2bA2796f8698120A2acB95634',
     usdcAddr: '0x1F3a10587A20114EA25Ba1b388EE2dD4A337ce27',
     homaFactoryAddr: '0x915b1505EC8dffE845Bf0AEAc982706631b1C4b6',
     accountHelperAddr: '0x94Bb240Ff3BB9a61D8f31C39978Ce7D858b9C015',
@@ -251,6 +252,14 @@ export const ROUTER_TOKEN_INFO = {
     acalaAddr: '0x000000000000000000040000000000000000000d',
     decimals: 10,
     fee: 0.01,
+  },
+  [TOKEN.KSM]: {
+    originChain: CHAIN.KARURA,
+    originAddr: '0x0000000000000000000100000000000000000082',
+    karuraAddr: '0x0000000000000000000100000000000000000082',
+    acalaAddr: null,
+    decimals: 12,
+    fee: 0.001,
   },
 } as const;
 
