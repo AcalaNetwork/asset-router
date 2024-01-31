@@ -4,7 +4,7 @@ import { ethers } from 'hardhat';
 
 import { ADDRESSES } from './consts';
 
-const targetContract = ADDRESSES.ACALA.homaFactoryAddr;
+const targetContract = ADDRESSES.KARURA.homaFactoryAddr;
 
 async function main() {
   const [deployer] = await ethers.getSigners();
