@@ -1,15 +1,16 @@
 import { DOT, LDOT } from '@acala-network/contracts/utils/AcalaTokens';
+import { KSM, LKSM } from '@acala-network/contracts/utils/KaruraTokens';
 import { ethers, run } from 'hardhat';
 
 import { ADDRESSES } from './consts';
 
 async function main() {
-  const stakingToken = DOT;
-  const liquidToken = LDOT;
+  const stakingToken = KSM;
+  const liquidToken = LKSM;
 
   const Factory = await ethers.getContractFactory('HomaFactory', {
     libraries: {
-      AccountHelper: ADDRESSES.ACALA.accountHelperAddr,
+      AccountHelper: ADDRESSES.KARURA.accountHelperAddr,
     },
   });
   const factory = await Factory.deploy(stakingToken, liquidToken);
