@@ -1,6 +1,6 @@
 {
   "name": "@acala-network/asset-router",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "main": "dist/index.js",
   "repository": "git@github.com:AcalaNetwork/asset-router.git",
   "author": "Acala Developers <hello@acala.network>",
