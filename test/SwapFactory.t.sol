@@ -63,15 +63,13 @@ contract SwapFactoryTest is Test {
         SwapInstructions memory inst2 = SwapInstructions(alice, 2 ether, bob, token2);
 
         vm.prank(bob);
-        vm.expectRevert("must provide target token as maker");
+        vm.expectRevert("TRANSFER_FROM_FAILED");
         factory.deploySwapRouter(fees, inst1, 10 ether);
 
         token2.transfer(bob, 10 ether);
         vm.startPrank(bob);
 
         token2.approve(address(factory), 10 ether);
-        vm.expectRevert("must provide target token as maker");
-        factory.deploySwapRouter(fees, inst1, 10 ether);
 
         assertEq(token2.balanceOf(bob), 10 ether);
         SwapRouter router = factory.deploySwapRouter(fees, inst2, 10 ether);

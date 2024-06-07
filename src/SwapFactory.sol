@@ -44,7 +44,6 @@ contract SwapFactory {
         }
 
         if (targetAmount > 0) {
-            require(inst.maker == msg.sender, "must provide target token as maker");
             inst.targetToken.safeTransferFrom(inst.maker, address(router), targetAmount);
         }
 
