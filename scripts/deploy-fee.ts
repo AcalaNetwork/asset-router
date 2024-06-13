@@ -5,7 +5,7 @@ import { FeeStruct } from '../typechain-types/src/FeeRegistry';
 import { ROUTER_TOKEN_INFO } from './consts';
 
 async function main() {
-  const isAcala = network.name === 'acala';
+  const isAcala = network.name.toLowerCase().includes('acala');
   const feeConfig = Object.entries(ROUTER_TOKEN_INFO)
     .filter(([, info]) => isAcala ? !!info.acalaAddr : !!info.karuraAddr)
     .map(([, info]) => ({

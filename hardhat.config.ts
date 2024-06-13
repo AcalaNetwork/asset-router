@@ -10,7 +10,7 @@ const TEST_ACCOUNTS = {
   path: 'm/44\'/60\'/0\'/0',
 };
 
-const PROD_ACCOUNTS = process.env.KEY ? [process.env.KEY] : [];
+const PROD_ACCOUNTS = process.env.KEY ? process.env.KEY.split(',') : [];
 
 const config: HardhatUserConfig = {
   solidity: '0.8.18',
@@ -26,8 +26,8 @@ const config: HardhatUserConfig = {
       chainId: 596,
     },
     acalaFork: {
-      url: 'http://127.0.0.1:8545',
-      accounts: TEST_ACCOUNTS,
+      url: 'https://crosschain-dev.polkawallet.io/forkAcala/',
+      accounts: PROD_ACCOUNTS,
       chainId: 787,
     },
     karura: {
