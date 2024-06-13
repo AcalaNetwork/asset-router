@@ -143,7 +143,7 @@ describe('Stake and Swap Router', () => {
       almostEq(bal1.userBal.sub(bal0.userBal), targetAmountNative);
 
       // relayer should receive fee
-      expect(bal1.relayerBalJitoSol.sub(bal0.relayerBalJitoSol)).to.eq(routingFee);
+      expect(bal1.relayerBalJitoSol.sub(bal0.relayerBalJitoSol)).to.eq(routingFee.add(supplyAmount));
 
       // router should be destroyed
       routerCode = await relayer.provider!.getCode(routerAddr);
