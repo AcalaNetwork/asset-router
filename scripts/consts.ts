@@ -9,6 +9,7 @@ export const enum CHAIN {
   BSC = 'BSC',
   ARB = 'ARB',
   POLYGON = 'POLYGON',
+  SOLANA = 'SOLANA',
 }
 
 export const enum TOKEN {
@@ -35,6 +36,7 @@ export const enum TOKEN {
   TDOT = 'tdot',
   LCDOT = 'lcdot',
   KSM = 'ksm',
+  JITOSOL = 'jitosol',
 }
 
 export type CHAIN_NAME = keyof typeof CHAIN;
@@ -51,11 +53,12 @@ export const ADDRESSES = {
   [CHAIN.ACALA_TESTNET]: {
     tokenBridgeAddr: CONTRACTS.TESTNET.acala.token_bridge,
     factoryAddr: '',
-    feeAddr: '0xfFAD744806522F9F9f3bef1F09Ec5421Bfc0874e',              // acala fork
+    feeAddr: '0x346a989D3B55a82b3CD8a5ed804E3776Af90925a',              // acala fork
     usdcAddr: '0x7E0CCD4209Ef7039901512fF9f6a01d0de0691e2',
     homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',      // acala fork
     accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',    // acala fork
     euphratesFactoryAddr: '0x2AeFc65B6E1660d2bA2796f8698120A2acB95634', // acala fork
+    swapAndStakeFactoryAddr: '0x97B15411D65e83F0bDA8D1db628CCC5D003B754d', // acala fork
   },
   [CHAIN.KARURA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.karura.token_bridge,
@@ -73,6 +76,7 @@ export const ADDRESSES = {
     homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',
     accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',
     euphratesFactoryAddr: '0x2AeFc65B6E1660d2bA2796f8698120A2acB95634',
+    swapAndStakeFactoryAddr: '',
   },
 } as const;
 
@@ -260,6 +264,14 @@ export const ROUTER_TOKEN_INFO = {
     acalaAddr: null,
     decimals: 12,
     fee: 0.001,
+  },
+  [TOKEN.JITOSOL]: {
+    originChain: CHAIN.SOLANA,
+    originAddr: '',
+    karuraAddr: '',
+    acalaAddr: '0xa7fb00459f5896c3bd4df97870b44e868ae663d7',
+    decimals: 9,
+    fee: 0.0003,
   },
 } as const;
 
