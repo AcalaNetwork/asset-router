@@ -167,7 +167,7 @@ contract SwapAndStakeEuphratesRouterTest is Test {
         assertEq(euphrates.shares(0, alice), 0);
 
         vm.prank(bob);
-        vm.expectRevert("TRANSFER_FAILED");
+        vm.expectRevert("SwapAndStakeEuphratesRouter: not enough token supplied");
         router.routeNoFee(token1);
     }
 
