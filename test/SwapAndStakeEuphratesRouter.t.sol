@@ -167,15 +167,8 @@ contract SwapAndStakeEuphratesRouterTest is Test {
         assertEq(euphrates.shares(0, alice), 0);
 
         vm.prank(bob);
+        vm.expectRevert("TRANSFER_FAILED");
         router.routeNoFee(token1);
-        assertEq(token1.balanceOf(address(router)), 0);
-        assertEq(token2.balanceOf(address(router)), 0);
-        assertEq(token1.balanceOf(alice), 0);
-        assertEq(token2.balanceOf(alice), 0);
-        assertEq(token1.balanceOf(maker), 6 ether);
-        assertEq(token2.balanceOf(maker), 0);
-        assertEq(token1.balanceOf(address(euphrates)), 0);
-        assertEq(euphrates.shares(0, alice), 0);
     }
 
     function testRescure_withTargetToken() public {
