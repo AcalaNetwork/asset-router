@@ -10,7 +10,7 @@ const TEST_ACCOUNTS = {
   path: 'm/44\'/60\'/0\'/0',
 };
 
-const PROD_ACCOUNTS = process.env.KEY ? process.env.KEY.split(',') : [];
+const MY_ACCOUNTS = process.env.KEY ? process.env.KEY.split(',') : [];
 
 const config: HardhatUserConfig = {
   solidity: '0.8.18',
@@ -25,19 +25,24 @@ const config: HardhatUserConfig = {
       accounts: TEST_ACCOUNTS,
       chainId: 596,
     },
+    acalaTestnet: {
+      url: 'https://eth-rpc-acala-testnet.aca-staging.network',
+      accounts: MY_ACCOUNTS,
+      chainId: 597,
+    },
     acalaFork: {
       url: 'https://crosschain-dev.polkawallet.io/forkAcala/',
-      accounts: PROD_ACCOUNTS,
+      accounts: MY_ACCOUNTS,
       chainId: 787,
     },
     karura: {
       url: 'https://eth-rpc-karura.aca-api.network',
-      accounts: PROD_ACCOUNTS,
+      accounts: MY_ACCOUNTS,
       chainId: 686,
     },
     acala: {
       url: 'https://eth-rpc-acala.aca-api.network',
-      accounts: PROD_ACCOUNTS,
+      accounts: MY_ACCOUNTS,
       chainId: 787,
     },
   },
@@ -64,8 +69,8 @@ const config: HardhatUserConfig = {
         network: 'acalaTestnet',
         chainId: 597,
         urls: {
-          apiURL: 'https://blockscout.acala-dev.aca-dev.network/api',
-          browserURL: 'https://blockscout.acala-dev.aca-dev.network',
+          apiURL: 'https://blockscout.acala-testnet.aca-staging.network/api',
+          browserURL: 'https://blockscout.acala-testnet.aca-staging.network',
         },
       },
       {
