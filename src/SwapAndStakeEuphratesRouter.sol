@@ -28,8 +28,10 @@ contract SwapAndStakeEuphratesRouter is BaseRouter {
     }
 
     function routeImpl(ERC20 token) internal override {
-        // transfer supplyAmount to maker if possible
-        token.safeTransfer(_instructions.maker, Math.min(_instructions.supplyAmount, token.balanceOf(address(this))));
+        if (token.balanceOf(address(this)) < _instructions.supplyAmount) {
+            revert("SwapAndStakeEuphratesRouter: not enough token supplied");
+        }
+        token.safeTransfer(_instructions.maker, _instructions.supplyAmount);
 
         // stake remain token to euphrates pool
         if (address(token) == address(IStakingTo(_instructions.euphrates).shareTypes(_instructions.poolId))) {
