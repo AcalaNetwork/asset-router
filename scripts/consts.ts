@@ -71,12 +71,12 @@ export const ADDRESSES = {
   [CHAIN.ACALA]: {
     tokenBridgeAddr: CONTRACTS.MAINNET.acala.token_bridge,
     factoryAddr: '0x4D72F3b3e6D2AFeD99923137a04b9Cd9Cd2F21C5',
-    feeAddr: '0x94Bb240Ff3BB9a61D8f31C39978Ce7D858b9C015',
+    feeAddr: '0x5Fc7261E168F6a8c1053F2208c7db4BCbef133b3',
     usdcAddr: '0x07DF96D1341A7d16Ba1AD431E2c847d978BC2bCe',
     homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',
     accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',
     euphratesFactoryAddr: '0x2AeFc65B6E1660d2bA2796f8698120A2acB95634',
-    swapAndStakeFactoryAddr: '',
+    swapAndStakeFactoryAddr: '0x3923E44cf1062FBa513279Ab81e6B8727a6de3D6',
   },
 } as const;
 
