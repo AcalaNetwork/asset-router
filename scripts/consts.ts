@@ -76,7 +76,7 @@ export const ADDRESSES = {
     homaFactoryAddr: '0x2ed9aa0e30D52958E21Db37FfBDC3F0B0fD4b973',
     accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',
     euphratesFactoryAddr: '0x2AeFc65B6E1660d2bA2796f8698120A2acB95634',
-    swapAndStakeFactoryAddr: '0x346a989D3B55a82b3CD8a5ed804E3776Af90925a',
+    swapAndStakeFactoryAddr: '0x3923E44cf1062FBa513279Ab81e6B8727a6de3D6',
   },
 } as const;
 

@@ -17,12 +17,12 @@ const config: HardhatUserConfig = {
   networks: {
     mandala: {
       url: 'http://127.0.0.1:8545',
-      accounts: TEST_ACCOUNTS,
+      accounts: MY_ACCOUNTS,
       chainId: 595,
     },
     karuraTestnet: {
       url: 'https://eth-rpc-karura-testnet.aca-staging.network',
-      accounts: TEST_ACCOUNTS,
+      accounts: MY_ACCOUNTS,
       chainId: 596,
     },
     acalaTestnet: {
