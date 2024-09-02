@@ -231,9 +231,9 @@ describe('Homa Router', () => {
 
       const router = HomaRouter__factory.connect(routerAddr, relayer);
 
-      await expect(router.rescure(token.address)).to.be.revertedWith('HomaRouter: not recipient');    // relayer is not the recipient
+      await expect(router.rescue(token.address)).to.be.revertedWith('HomaRouter: not recipient');    // relayer is not the recipient
 
-      await (await router.connect(user).rescure(token.address)).wait();   // user is the recipient
+      await (await router.connect(user).rescue(token.address)).wait();   // user is the recipient
     } else {
       const deployAndRoute = await factory.deployHomaRouterAndRouteNoFee(
         fee.address,

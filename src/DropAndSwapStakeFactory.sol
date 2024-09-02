@@ -75,4 +75,15 @@ contract DropAndSwapStakeFactory {
         DropAndSwapStakeRouter router = deployDropAndSwapStakeRouter(fees, inst, dropAmount);
         router.routeNoFee(token);
     }
+
+    function deployDropAndSwapStakeRouterAndRescue(
+        FeeRegistry fees,
+        DropAndSwapStakeInstructions memory inst,
+        ERC20 token,
+        uint256 dropAmount,
+        bool isGasDrop
+    ) public {
+        DropAndSwapStakeRouter router = deployDropAndSwapStakeRouter(fees, inst, dropAmount);
+        router.rescue(token, isGasDrop);
+    }
 }
