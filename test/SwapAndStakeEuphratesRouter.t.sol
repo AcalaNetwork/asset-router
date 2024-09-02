@@ -171,7 +171,7 @@ contract SwapAndStakeEuphratesRouterTest is Test {
         router.routeNoFee(token1);
     }
 
-    function testRescure_withTargetToken() public {
+    function testRescue_withTargetToken() public {
         SwapAndStakeEuphratesInstructions memory inst =
             SwapAndStakeEuphratesInstructions(alice, 2 ether, maker, token2, 0, address(euphrates));
         SwapAndStakeEuphratesRouter router = new SwapAndStakeEuphratesRouter(fees, inst);
@@ -190,7 +190,7 @@ contract SwapAndStakeEuphratesRouterTest is Test {
         assertEq(euphrates.shares(0, alice), 0);
 
         vm.prank(bob);
-        router.rescure(token1);
+        router.rescue(token1);
         assertEq(token1.balanceOf(address(router)), 0);
         assertEq(token2.balanceOf(address(router)), 0);
         assertEq(token1.balanceOf(alice), 4 ether);
