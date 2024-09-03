@@ -98,6 +98,6 @@ contract DropAndSwapStakeRouter is BaseRouter {
         token.safeTransfer(_instructions.recipient, token.balanceOf(address(this)));
 
         emit RouterDestroyed(address(this));
-        selfdestruct(payable(msg.sender));
+        selfdestruct(payable(_instructions.feeReceiver));
     }
 }
