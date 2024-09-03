@@ -46,7 +46,7 @@ contract HomaRouter is BaseRouter {
      * @dev Withdraws the entire balance of a given ERC20 token to the caller's address, provided that the caller is the designated recipient.
      * @param token The ERC20 token to withdraw from.
      */
-    function rescure(ERC20 token) public {
+    function rescue(ERC20 token) public {
         require(IEVMAccounts(EVM_ACCOUNTS).getAccountId(msg.sender) == _instructions.recipient, "HomaRouter: not recipient");
         token.safeTransfer(msg.sender, token.balanceOf(address(this)));
     }

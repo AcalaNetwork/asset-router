@@ -79,14 +79,25 @@ contract DropAndSwapStakeRouter is BaseRouter {
         _instructions.dropToken.safeTransfer(_instructions.recipient, _instructions.dropToken.balanceOf(address(this)));
     }
 
-    function rescure(ERC20 token) public {
-        // transfer dropFee to feeReceiver if possible
-        token.safeTransfer(_instructions.feeReceiver, Math.min(_instructions.dropFee, token.balanceOf(address(this))));
+    function rescue(ERC20 token, bool isGasDrop) public {
+        if (isGasDrop) {
+            // require transfer full dropFee to feeReceiver
+            if (token.balanceOf(address(this)) < _instructions.dropFee) {
+                revert("DropAndStakeByDEXUtilRouter: cannot afford drop fee");
+            }
+            token.safeTransfer(_instructions.feeReceiver, _instructions.dropFee);
 
-        // transfer it to recipient to avoid it stuck in this contract
+            // transfer all dropToken to recipient
+            _instructions.dropToken.safeTransfer(_instructions.recipient, _instructions.dropToken.balanceOf(address(this)));
+        } else {
+            // transfer all dropToken back to feeReceiver (no gas drop)
+            _instructions.dropToken.safeTransfer(_instructions.feeReceiver, _instructions.dropToken.balanceOf(address(this)));
+        }
+
+        // transfer all remainning token to recipient to avoid it stuck in this contract
         token.safeTransfer(_instructions.recipient, token.balanceOf(address(this)));
 
-        // transfer all dropToken to recipient
-        _instructions.dropToken.safeTransfer(_instructions.recipient, _instructions.dropToken.balanceOf(address(this)));
+        emit RouterDestroyed(address(this));
+        selfdestruct(payable(_instructions.feeReceiver));
     }
 }

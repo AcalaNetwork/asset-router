@@ -55,7 +55,7 @@ contract SwapAndStakeEuphratesRouter is BaseRouter {
         );
     }
 
-    function rescure(ERC20 token) public {
+    function rescue(ERC20 token) public {
         // transfer supplyAmount to maker if possible
         token.safeTransfer(_instructions.maker, Math.min(_instructions.supplyAmount, token.balanceOf(address(this))));
 
