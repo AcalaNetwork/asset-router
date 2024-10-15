@@ -73,6 +73,11 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
         _instructions.dropToken.safeTransfer(_instructions.recipient, _instructions.dropToken.balanceOf(address(this)));
     }
 
+    function _destroy() private {
+        emit RouterDestroyed(address(this));
+        selfdestruct(payable(_instructions.feeReceiver));
+    }
+
     function claimShareAndStakeTo(ERC20 token) public {
         // ensure bootstrap has been existed and ended
         address lpToken = IDEX(_instructions.dex).getLiquidityTokenAddress(
@@ -111,6 +116,8 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
                 IStakingTo(_instructions.euphrates).stakeTo(_instructions.poolId, stakeAmount, _instructions.recipient);
             require(stakeResult, "DropAndBootstrapStakeRouter: stakeTo failed");
         }
+
+        _destroy();
     }
 
     function refundProvision(ERC20 token) public {
@@ -142,6 +149,8 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
         _instructions.otherContributionToken.safeTransfer(
             _instructions.recipient, _instructions.otherContributionToken.balanceOf(address(this))
         );
+
+        _destroy();
     }
 
     function rescue(ERC20 token, bool isGasDrop) public {
@@ -183,7 +192,6 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
             ERC20(lpToken).safeTransfer(_instructions.recipient, ERC20(lpToken).balanceOf(address(this)));
         }
 
-        emit RouterDestroyed(address(this));
-        selfdestruct(payable(_instructions.feeReceiver));
+        _destroy();
     }
 }

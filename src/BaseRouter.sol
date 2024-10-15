@@ -21,23 +21,31 @@ abstract contract BaseRouter {
 
     function routeImpl(ERC20 token) internal virtual;
 
-    function routeNoFee(ERC20 token) public {
+    function routeNoFee(ERC20 token, bool shouldDestruct) public {
         routeImpl(token);
 
-        // selfdestruct only if balance is zero to make sure this cannot be used to steal native tokens
-        if (address(this).balance == 0) {
+        // selfdestruct only if balance is zero and shouldDestruct is true
+        if (address(this).balance == 0 && shouldDestruct) {
             emit RouterDestroyed(address(this));
             selfdestruct(payable(msg.sender));
         }
     }
 
-    function route(ERC20 token, address relayer) public {
+    function routeNoFee(ERC20 token) public {
+        routeNoFee(token, true);
+    }
+
+    function route(ERC20 token, address relayer, bool shouldDestruct) public {
         uint256 fee = fees.getFee(address(token));
 
         // should use routeNoFee if relayer is not expecting a fee
         require(fee > 0, "zero fee");
 
         token.safeTransfer(relayer, fee);
-        routeNoFee(token);
+        routeNoFee(token, shouldDestruct);
+    }
+
+    function route(ERC20 token, address relayer) public {
+        route(token, relayer, true);
     }
 }
