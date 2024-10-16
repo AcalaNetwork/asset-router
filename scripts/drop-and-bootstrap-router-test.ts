@@ -3,14 +3,15 @@ import '@acala-network/types';
 import { ACA, LDOT } from '@acala-network/contracts/utils/AcalaTokens';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { DEX } from '@acala-network/contracts/utils/Predeploy';
-import { BigNumber, constants, Wallet } from 'ethers';
+import { TransactionReceipt } from '@ethersproject/providers';
+import { Wallet, constants } from 'ethers';
 import { ethers } from 'hardhat';
-
-import { ADDRESSES, CHAIN, ROUTER_TOKEN_INFO } from './consts';
-import { DropAndBootstrapStakeFactory__factory, ERC20__factory } from '../typechain-types';
 import { parseUnits } from 'ethers/lib/utils';
 
-const FACTORY_ADDR = '0xEf0D5c39B704ef5De7302D50b5245e1584d63f5A';
+import { ADDRESSES, CHAIN, ROUTER_TOKEN_INFO } from './consts';
+import { DropAndBootstrapStakeFactory__factory, DropAndBootstrapStakeRouter__factory, ERC20__factory } from '../typechain-types';
+
+const FACTORY_ADDR = '0x05598F8A9a74f6BDc31F9Da93B051114c0a41923';
 const EUPHRATES_ADDR = '0x7Fe92EC600F15cD25253b421bc151c51b0276b7D';
 const JITOSOL_ADDR = ROUTER_TOKEN_INFO.jitosol.acalaAddr;
 const FEE_ADDR = ADDRESSES[CHAIN.ACALA].feeAddr;
@@ -55,20 +56,40 @@ const NODE_URL = 'wss://crosschain-dev.polkawallet.io/chopsticksAcala';
 
   console.log({ routerAddr });
 
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 3; i++) {
     console.log('');
     console.log(`-------------------- RUN ${i} --------------------`);
     console.log('transfering jitosol to router ...');
     const transferAmount = parseUnits('0.1', 9);
     await (await jitosol.transfer(routerAddr, transferAmount)).wait();
 
-    console.log('performing route ...');
-    const receipt = await (await factory.deployDropAndBootstrapStakeRouterAndRoute(
+    const _routerAddr = await factory.callStatic.deployDropAndBootstrapStakeRouter(
       FEE_ADDR,
       insts,
-      JITOSOL_ADDR,
       dropAmount,
-    )).wait();
+    );
+
+    if (_routerAddr !== routerAddr) {
+      throw new Error('router address mismatch');
+    } else {
+      console.log('router address match');
+    }
+
+    let receipt: TransactionReceipt;
+    const shouldRouteDirectly = i > 0;
+    if (shouldRouteDirectly) {
+      console.log('route directly ...');
+      const router = DropAndBootstrapStakeRouter__factory.connect(routerAddr, wallet);
+      receipt = await (await router['route(address,address,bool)'](JITOSOL_ADDR, wallet.address, false)).wait();
+    } else {
+      console.log('deploy router and route ...');
+      receipt = await (await factory.deployDropAndBootstrapStakeRouterAndRoute(
+        FEE_ADDR,
+        insts,
+        JITOSOL_ADDR,
+        dropAmount,
+      )).wait();
+    }
 
     console.log('querying tx info ...');
     const blockHash = receipt.blockHash;
