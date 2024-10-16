@@ -75,21 +75,12 @@ const NODE_URL = 'wss://crosschain-dev.polkawallet.io/chopsticksAcala';
       console.log('router address match');
     }
 
-    let receipt: TransactionReceipt;
-    const shouldRouteDirectly = i > 0;
-    if (shouldRouteDirectly) {
-      console.log('route directly ...');
-      const router = DropAndBootstrapStakeRouter__factory.connect(routerAddr, wallet);
-      receipt = await (await router['route(address,address,bool)'](JITOSOL_ADDR, wallet.address, false)).wait();
-    } else {
-      console.log('deploy router and route ...');
-      receipt = await (await factory.deployDropAndBootstrapStakeRouterAndRoute(
-        FEE_ADDR,
-        insts,
-        JITOSOL_ADDR,
-        dropAmount,
-      )).wait();
-    }
+    const receipt = await (await factory.deployDropAndBootstrapStakeRouterAndRoute(
+      FEE_ADDR,
+      insts,
+      JITOSOL_ADDR,
+      dropAmount,
+    )).wait();
 
     console.log('querying tx info ...');
     const blockHash = receipt.blockHash;
