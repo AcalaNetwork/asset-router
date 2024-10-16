@@ -26,16 +26,19 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
     using SafeTransferLib for ERC20;
 
     DropAndBootstrapStakeInstructions private _instructions;
+    bool private _dropped;
 
     constructor(FeeRegistry fees, DropAndBootstrapStakeInstructions memory instructions) BaseRouter(fees) {
         _instructions = instructions;
     }
 
     function routeImpl(ERC20 token) internal override {
-        if (token.balanceOf(address(this)) < _instructions.dropFee) {
-            revert("DropAndBootstrapStakeRouter: cannot afford drop fee");
+        if (!_dropped) {
+            if (token.balanceOf(address(this)) < _instructions.dropFee) {
+                revert("DropAndBootstrapStakeRouter: cannot afford drop fee");
+            }
+            token.safeTransfer(_instructions.feeReceiver, _instructions.dropFee);
         }
-        token.safeTransfer(_instructions.feeReceiver, _instructions.dropFee);
 
         // ensure bootstrap is in process and not ended
         address lpToken = IDEX(_instructions.dex).getLiquidityTokenAddress(
@@ -69,8 +72,19 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
             require(result, "DropAndBootstrapStakeRouter: addProvision failed");
         }
 
-        // transfer all dropToken to recipient
-        _instructions.dropToken.safeTransfer(_instructions.recipient, _instructions.dropToken.balanceOf(address(this)));
+        if (!_dropped) {
+            // transfer all dropToken to recipient
+            _instructions.dropToken.safeTransfer(
+                _instructions.recipient, _instructions.dropToken.balanceOf(address(this))
+            );
+
+            _dropped = true;
+        }
+    }
+
+    function _destroy() private {
+        emit RouterDestroyed(address(this));
+        selfdestruct(payable(_instructions.feeReceiver));
     }
 
     function _destroy() private {
@@ -162,21 +176,23 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
             "DropAndBootstrapStakeRouter: exist provision, must claim share or refund provision"
         );
 
-        if (isGasDrop) {
-            // require transfer full dropFee to feeReceiver
-            if (token.balanceOf(address(this)) < _instructions.dropFee) {
-                revert("DropAndBootstrapStakeRouter: cannot afford drop fee");
+        if (!_dropped) {
+            if (isGasDrop) {
+                // require transfer full dropFee to feeReceiver
+                if (token.balanceOf(address(this)) < _instructions.dropFee) {
+                    revert("DropAndBootstrapStakeRouter: cannot afford drop fee");
+                }
+                token.safeTransfer(_instructions.feeReceiver, _instructions.dropFee);
+                // transfer all dropToken to recipient
+                _instructions.dropToken.safeTransfer(
+                    _instructions.recipient, _instructions.dropToken.balanceOf(address(this))
+                );
+            } else {
+                // transfer all dropToken back to feeReceiver (no gas drop)
+                _instructions.dropToken.safeTransfer(
+                    _instructions.feeReceiver, _instructions.dropToken.balanceOf(address(this))
+                );
             }
-            token.safeTransfer(_instructions.feeReceiver, _instructions.dropFee);
-            // transfer all dropToken to recipient
-            _instructions.dropToken.safeTransfer(
-                _instructions.recipient, _instructions.dropToken.balanceOf(address(this))
-            );
-        } else {
-            // transfer all dropToken back to feeReceiver (no gas drop)
-            _instructions.dropToken.safeTransfer(
-                _instructions.feeReceiver, _instructions.dropToken.balanceOf(address(this))
-            );
         }
 
         // transfer all remainning token to recipient to avoid it stuck in this contract
