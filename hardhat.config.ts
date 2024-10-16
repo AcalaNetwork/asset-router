@@ -31,7 +31,7 @@ const config: HardhatUserConfig = {
       chainId: 597,
     },
     acalaFork: {
-      url: 'https://crosschain-dev.polkawallet.io/forkAcala/',
+      url: 'https://crosschain-dev.polkawallet.io/chopsticksAcalaRpc',
       accounts: MY_ACCOUNTS,
       chainId: 787,
     },

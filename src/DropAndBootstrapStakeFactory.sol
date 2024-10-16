@@ -63,7 +63,7 @@ contract DropAndBootstrapStakeFactory {
         uint256 dropAmount
     ) public {
         DropAndBootstrapStakeRouter router = deployDropAndBootstrapStakeRouter(fees, inst, dropAmount);
-        router.route(token, msg.sender);
+        router.route(token, msg.sender, false);
     }
 
     function deployDropAndBootstrapStakeRouterAndRouteNoFee(
