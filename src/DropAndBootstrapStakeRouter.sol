@@ -87,6 +87,11 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
         selfdestruct(payable(_instructions.feeReceiver));
     }
 
+    function _destroy() private {
+        emit RouterDestroyed(address(this));
+        selfdestruct(payable(_instructions.feeReceiver));
+    }
+
     function claimShareAndStakeTo(ERC20 token) public {
         // ensure bootstrap has been existed and ended
         address lpToken = IDEX(_instructions.dex).getLiquidityTokenAddress(
