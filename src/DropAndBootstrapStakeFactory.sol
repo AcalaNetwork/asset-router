@@ -30,10 +30,10 @@ contract DropAndBootstrapStakeFactory {
 
         if (routerAddr.code.length == 0) {
             routerAddr = Create2.deploy(0, salt, bytecode);
+        }
 
-            if (dropAmount > 0) {
-                inst.dropToken.safeTransferFrom(msg.sender, routerAddr, dropAmount);
-            }
+        if (dropAmount > 0) {
+            inst.dropToken.safeTransferFrom(msg.sender, routerAddr, dropAmount);
         }
 
         return DropAndBootstrapStakeRouter(routerAddr);

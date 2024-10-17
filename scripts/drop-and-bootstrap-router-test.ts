@@ -11,7 +11,7 @@ import { parseUnits } from 'ethers/lib/utils';
 import { ADDRESSES, CHAIN, ROUTER_TOKEN_INFO } from './consts';
 import { DropAndBootstrapStakeFactory__factory, DropAndBootstrapStakeRouter__factory, ERC20__factory } from '../typechain-types';
 
-const FACTORY_ADDR = '0x05598F8A9a74f6BDc31F9Da93B051114c0a41923';
+const FACTORY_ADDR = '0x4972507E55e6C49820370b8823eF866fe701a1b1';
 const EUPHRATES_ADDR = '0x7Fe92EC600F15cD25253b421bc151c51b0276b7D';
 const JITOSOL_ADDR = ROUTER_TOKEN_INFO.jitosol.acalaAddr;
 const FEE_ADDR = ADDRESSES[CHAIN.ACALA].feeAddr;
