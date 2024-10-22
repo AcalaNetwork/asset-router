@@ -2,6 +2,7 @@
 pragma solidity ^0.8.17;
 
 import { ERC20 } from "solmate/tokens/ERC20.sol";
+import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
 import { SafeTransferLib } from "solmate/utils/SafeTransferLib.sol";
 import { FeeRegistry } from "./FeeRegistry.sol";
 import { DropAndBootstrapStakeRouter, DropAndBootstrapStakeInstructions } from "./DropAndBootstrapStakeRouter.sol";
@@ -22,38 +23,20 @@ contract DropAndBootstrapStakeFactory {
 
         // no need to use salt as we want to keep the router address the same for the same fees &instructions
         bytes32 salt;
-
         DropAndBootstrapStakeRouter router;
-        try new DropAndBootstrapStakeRouter{ salt: salt }(fees, inst) returns (DropAndBootstrapStakeRouter router_) {
-            router = router_;
-        } catch {
-            router = DropAndBootstrapStakeRouter(
-                address(
-                    uint160(
-                        uint256(
-                            keccak256(
-                                abi.encodePacked(
-                                    bytes1(0xff),
-                                    address(this),
-                                    salt,
-                                    keccak256(
-                                        abi.encodePacked(
-                                            type(DropAndBootstrapStakeRouter).creationCode, abi.encode(fees, inst)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            );
+
+        bytes memory bytecode = abi.encodePacked(type(DropAndBootstrapStakeRouter).creationCode, abi.encode(fees, inst));
+        address routerAddr = Create2.computeAddress(salt, keccak256(bytecode));
+
+        if (routerAddr.code.length == 0) {
+            routerAddr = Create2.deploy(0, salt, bytecode);
+
+            if (dropAmount > 0) {
+                inst.dropToken.safeTransferFrom(msg.sender, routerAddr, dropAmount);
+            }
         }
 
-        if (dropAmount > 0) {
-            inst.dropToken.safeTransferFrom(msg.sender, address(router), dropAmount);
-        }
-
-        return router;
+        return DropAndBootstrapStakeRouter(routerAddr);
     }
 
     function deployDropAndBootstrapStakeRouterAndRoute(
