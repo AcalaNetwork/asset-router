@@ -23,8 +23,6 @@ contract DropAndBootstrapStakeFactory {
 
         // no need to use salt as we want to keep the router address the same for the same fees &instructions
         bytes32 salt;
-        DropAndBootstrapStakeRouter router;
-
         bytes memory bytecode = abi.encodePacked(type(DropAndBootstrapStakeRouter).creationCode, abi.encode(fees, inst));
         address routerAddr = Create2.computeAddress(salt, keccak256(bytecode));
 
@@ -63,10 +61,9 @@ contract DropAndBootstrapStakeFactory {
         FeeRegistry fees,
         DropAndBootstrapStakeInstructions memory inst,
         ERC20 token,
-        uint256 dropAmount,
-        bool isGasDrop
+        uint256 dropAmount
     ) public {
         DropAndBootstrapStakeRouter router = deployDropAndBootstrapStakeRouter(fees, inst, dropAmount);
-        router.rescue(token, isGasDrop);
+        router.rescue(token);
     }
 }

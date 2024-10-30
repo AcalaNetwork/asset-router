@@ -162,34 +162,7 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
         _destroy();
     }
 
-    function rescue(ERC20 token, bool isGasDrop) public {
-        (uint256 contributionA, uint256 contributionB) = IBootstrap(_instructions.dex).getProvisionPoolOf(
-            address(this), address(token), address(_instructions.otherContributionToken)
-        );
-        require(
-            contributionA == 0 && contributionB == 0,
-            "DropAndBootstrapStakeRouter: exist provision, must claim share or refund provision"
-        );
-
-        if (!_dropped) {
-            if (isGasDrop) {
-                // require transfer full dropFee to feeReceiver
-                if (token.balanceOf(address(this)) < _instructions.dropFee) {
-                    revert("DropAndBootstrapStakeRouter: cannot afford drop fee");
-                }
-                token.safeTransfer(_instructions.feeReceiver, _instructions.dropFee);
-                // transfer all dropToken to recipient
-                _instructions.dropToken.safeTransfer(
-                    _instructions.recipient, _instructions.dropToken.balanceOf(address(this))
-                );
-            } else {
-                // transfer all dropToken back to feeReceiver (no gas drop)
-                _instructions.dropToken.safeTransfer(
-                    _instructions.feeReceiver, _instructions.dropToken.balanceOf(address(this))
-                );
-            }
-        }
-
+    function rescue(ERC20 token) public {
         // transfer all remainning token to recipient to avoid it stuck in this contract
         token.safeTransfer(_instructions.recipient, token.balanceOf(address(this)));
         _instructions.otherContributionToken.safeTransfer(
@@ -202,7 +175,5 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
         if (lpToken != address(0)) {
             ERC20(lpToken).safeTransfer(_instructions.recipient, ERC20(lpToken).balanceOf(address(this)));
         }
-
-        _destroy();
     }
 }
