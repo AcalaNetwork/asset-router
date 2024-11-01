@@ -61,9 +61,9 @@ contract DropAndBootstrapStakeFactory {
         FeeRegistry fees,
         DropAndBootstrapStakeInstructions memory inst,
         uint256 dropAmount,
-        ERC20[] memory tokens
+        ERC20 token
     ) public {
         DropAndBootstrapStakeRouter router = deployDropAndBootstrapStakeRouter(fees, inst, dropAmount);
-        router.rescue(tokens);
+        router.rescue(token);
     }
 }
