@@ -163,17 +163,6 @@ contract DropAndBootstrapStakeRouter is BaseRouter {
     }
 
     function rescue(ERC20 token) public {
-        // transfer all remainning token to recipient to avoid it stuck in this contract
         token.safeTransfer(_instructions.recipient, token.balanceOf(address(this)));
-        _instructions.otherContributionToken.safeTransfer(
-            _instructions.recipient, _instructions.otherContributionToken.balanceOf(address(this))
-        );
-
-        address lpToken = IDEX(_instructions.dex).getLiquidityTokenAddress(
-            address(token), address(_instructions.otherContributionToken)
-        );
-        if (lpToken != address(0)) {
-            ERC20(lpToken).safeTransfer(_instructions.recipient, ERC20(lpToken).balanceOf(address(this)));
-        }
     }
 }
