@@ -5,6 +5,7 @@ import { ERC20 } from "solmate/tokens/ERC20.sol";
 import { SafeTransferLib } from "solmate/utils/SafeTransferLib.sol";
 import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 import { IDEX } from "@acala-network/contracts/dex/IDEX.sol";
+import { LDOT } from "@acala-network/contracts/utils/AcalaTokens.sol";
 import { IStakingTo } from "euphrates/IStaking.sol";
 
 import { BaseRouter } from "./BaseRouter.sol";
@@ -72,8 +73,25 @@ contract DropAndSwapStakeRouter is BaseRouter {
         require(stakeResult, "DropAndStakeByDEXUtilRouter: stake failed");
 
         // return remain assets
-        token.safeTransfer(_instructions.recipient, token.balanceOf(address(this)));
-        ERC20(targetToken).safeTransfer(_instructions.recipient, ERC20(targetToken).balanceOf(address(this)));
+        uint256 LDOT_ED = 500000000;
+        uint256 remainingToken = token.balanceOf(address(this));
+        uint256 remainingTargetToken = ERC20(targetToken).balanceOf(address(this));
+
+        if (address(token) == LDOT) {
+            if (remainingToken >= LDOT_ED) {
+                token.safeTransfer(_instructions.recipient, remainingToken);
+            }
+        } else {
+            token.safeTransfer(_instructions.recipient, remainingToken);
+        }
+
+        if (targetToken == LDOT) {
+            if (remainingTargetToken >= LDOT_ED) {
+                ERC20(targetToken).safeTransfer(_instructions.recipient, remainingTargetToken);
+            }
+        } else {
+            ERC20(targetToken).safeTransfer(_instructions.recipient, remainingTargetToken);
+        }
 
         // transfer all dropToken to recipient
         _instructions.dropToken.safeTransfer(_instructions.recipient, _instructions.dropToken.balanceOf(address(this)));
