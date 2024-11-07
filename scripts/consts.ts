@@ -79,8 +79,8 @@ export const ADDRESSES = {
     accountHelperAddr: '0x0252340cC347718f9169d329CEFf8B15A92badf8',
     euphratesFactoryAddr: '0x2AeFc65B6E1660d2bA2796f8698120A2acB95634',
     swapAndStakeFactoryAddr: '0x3923E44cf1062FBa513279Ab81e6B8727a6de3D6',
-    dropAndSwapStakeFactoryAddr: '0x0F2A7a306D26697876689df9bdc5274982563505',    // acala fork
-    dropAndBootstrapStakeFactoryAddr: '0x1C7426D333b18Dbc050fc306E48DaA9a4A926b9b', // acala fork
+    dropAndSwapStakeFactoryAddr: '0x0F2A7a306D26697876689df9bdc5274982563505',
+    dropAndBootstrapStakeFactoryAddr: '0x0E7C7cD5e53a05a4D9cA5E7E518E5bCE643Aaf9b',
   },
 } as const;
 
